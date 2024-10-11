@@ -43,7 +43,6 @@ const createAxiosInstance = (url: string): AxiosInstance => {
 
             if (error.response?.status === 401 && originalRequest._retryCount < 2) {
                 originalRequest._retryCount += 1;
-                console.log('Retrying request:', originalRequest.url);
 
                 await refreshToken();
                 return instance(originalRequest);
@@ -81,7 +80,6 @@ const refreshToken = async () => {
                 credentials: 'include'
             }
         );
-        console.log(response)
         if (response.status == 401) {
             // window.location.href = '/home'
             Logout()

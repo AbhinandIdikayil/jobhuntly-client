@@ -32,7 +32,6 @@ export const getAllJob = createAsyncThunk(
     async (req: paginationAndFilter | undefined, { rejectWithValue }) => {
         try {
             let res
-            console.log(req)
             if (req?._id) {
                 res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req?._id}`, {
                     params: {
@@ -158,7 +157,6 @@ export const updateHiringStatus = createAsyncThunk(
     async (req: hiring, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.put(`/application/${req.applicationId}`, {status:req.status})
-            console.log(data)
             return {
                 id: data?._id, hiring_status: data.hiring_status
             }
