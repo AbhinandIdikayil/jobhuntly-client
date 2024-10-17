@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux"
 import { RootState } from "src/redux/store"
 import { formatDateToThree } from "src/utils/formateDate";
-
+import Lottie from 'lottie-react'
+import animation from '../../../animation/Animation - 1728884349481.json'
 function DashboardInterviewList() {
     const state = useSelector((state: RootState) => state.job)
     const today = new Date(); // Get today's date
@@ -25,6 +26,7 @@ function DashboardInterviewList() {
     return (
         <div className='overflow-y-scroll upcoming '>
             {
+                allSchedules?.length > 0 ?
                 allSchedules?.map((data: any) => (
                     <div className="flex flex-col px-6  mt-0 w-full text-base leading-relaxed max-md:pl-5 max-md:max-w-full">
                         <div className="flex flex-col w-full font-medium text-slate-500">
@@ -52,6 +54,9 @@ function DashboardInterviewList() {
                         </div>
                     </div>
                 ))
+                : (
+                    <Lottie animationData={animation} />
+                )
             }
         </div>
     )

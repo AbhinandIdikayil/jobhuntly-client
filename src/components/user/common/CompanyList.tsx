@@ -12,7 +12,8 @@ import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons
 import { Button, FormControl, InputLabel } from '@mui/material';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
 import SectoresAccordian from 'src/components/common/SectoresAccordian';
-
+import Lottie from 'lottie-react'
+import animation from 'src/animation/Animation - 1728884349481.json'
 interface FilterAndSearch {
     name: string;
     location: string;
@@ -150,7 +151,7 @@ function CompanyList() {
                             }}
                             variant='outlined'
                         >
-                            search companies 
+                            search companies
                         </Button>
                     </div>
                 </div>
@@ -208,21 +209,21 @@ function CompanyList() {
                                 </div>
                                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
                                     {
-                                        state.companies.companies?.length > 0 &&
-                                        state.companies.companies.map((data: any, index) => {
-                                            return data?.approvalStatus === 'Accepted' &&  (
+                                        state?.companies?.companies?.length > 0 &&
+                                        state?.companies?.companies.map((data: any, index) => {
+                                            return data?.approvalStatus === 'Accepted' && (
                                                 <CompanyCard key={index} data={data} />
                                             )
                                         })
                                     }
-                                    {
-                                        state.companies.companies?.length == 0 && (
-                                            <div className='w-screen'>
-
-                                            </div>
-                                        )
-                                    }
                                 </div>
+                                {
+                                    state?.companies?.companies?.length == 0 && (
+                                        <div className='w-full h-96'>
+                                            <Lottie className='w-full h-full' animationData={animation} />
+                                        </div>
+                                    )
+                                }
                                 <div className='flex items-center justify-center gap-2 font-bold'>
                                     <Button
                                         variant="contained"

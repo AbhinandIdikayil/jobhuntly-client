@@ -21,6 +21,8 @@ import SalaryAccordian from 'src/components/common/SalaryAccordian';
 import Loading from 'src/components/common/Loading';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import Lottie from 'lottie-react'
+import animation from 'src/animation/Animation - 1728884349481.json'
 
 
 function Jobs() {
@@ -310,9 +312,15 @@ function Jobs() {
                                 <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
                                     <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
                                         {
-                                            jobState?.jobs?.jobs?.map((data: any, ind: number) => (
-                                                <UserJobCard key={ind} data={data} apply={applyForJob} />
-                                            ))
+                                            jobState?.jobs?.jobs?.length > 0 ?
+                                                jobState?.jobs?.jobs?.map((data: any, ind: number) => (
+                                                    <UserJobCard key={ind} data={data} apply={applyForJob} />
+                                                ))
+                                                : (
+                                                    <div className='w-full h-96'>
+                                                        <Lottie className='w-full h-full' animationData={animation} />
+                                                    </div>
+                                                )
                                         }
                                         <div className='flex items-center justify-center gap-2 font-bold'>
                                             <Button
@@ -388,6 +396,7 @@ function Jobs() {
                                 <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
                                     <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
                                         {
+
                                             jobState?.recommended?.map((data: any, ind) => (
                                                 <UserJobCard key={ind} data={data} apply={applyForJob} />
                                             ))

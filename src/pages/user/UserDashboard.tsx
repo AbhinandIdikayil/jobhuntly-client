@@ -108,7 +108,7 @@ function UserDashboard() {
             </div>
           </div>
           <div className="hflex flex-col pb-3 bg-white border border-solid border-zinc-500 rounded w-full sm:w-1/3 max-md:max-w-full shadow-md">
-            <div className="flex flex-col pt-2 pb-2 w-full text-xl font-semibold leading-tight text-gray-800 border border-solid shadow-lg border-zinc-200 max-md:max-w-full">
+            <div className="flex flex-col pt-2 pb-2 w-full text-xl font-semibold leading-tight text-gray-800 border border-solid shadow-sm border-zinc-200 max-md:max-w-full">
               <div className="self-start ml-6 text-center max-md:ml-2.5 bg-white ">
                 Upcomming Interviews
               </div>
