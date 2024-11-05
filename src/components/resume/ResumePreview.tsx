@@ -21,12 +21,12 @@ function ResumePreview() {
   return (
     <div className='shadow-lg h-full p-14 max-md:p-10 border-t-[20px]'
       style={{
-        borderColor: resume?.themeColor
+        borderColor: resume?.themeColor || '#000'
       }}>
       {/* Persoanal details */}
-      < PersonalDetails data={resume} />
+      < PersonalDetails data={resume || {}} />
       {/* summary */}
-      <SummarPreview data={resume} />
+      <SummarPreview data={resume || {}} />
 
       {/* skills */}
       {resume?.skill?.length > 0 && <SkillsPreview data={resume} />}
