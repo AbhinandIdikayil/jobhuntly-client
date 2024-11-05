@@ -29,7 +29,7 @@ function ResumeView() {
                         <RWebShare
                             data={{
                                 text: "Hello Everyone, This is my resume please open url to see it",
-                                url: import.meta?.env?.VITE_BASE_URL || 'https://jobhunty-client.vercel.app/' + "/my-resume/view",
+                                url: import.meta?.env?.VITE_BASE_URL || 'https://jobhuntLy-client.vercel.app' + "/my-resume/view",
                                 title: resume?.firstName + " " + resume?.lastName + " resume",
                             }}
                             onClick={() => console.log("shared successfully!")}
