@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom"
+import { generateUniqueKey } from "src/utils/uniqueKey";
 
 function SkillsPreview({ data }: { data: any }) {
     const location = useLocation();
@@ -17,7 +18,7 @@ function SkillsPreview({ data }: { data: any }) {
                 data?.skill?.length &&
                 data?.skill?.map((val: any) => {
                     return (
-                        <div className="text-xs flex justify-between mt-2 w-full">
+                        <div key={generateUniqueKey()} className="text-xs flex justify-between mt-2 w-full">
                             <div className="w-[110px] capitalize flex-shrink-0">
                                 {val?.name}
                             </div>

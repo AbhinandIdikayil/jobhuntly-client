@@ -85,7 +85,6 @@ function ScheduleForm({ setOpen, id }: { setOpen: (pre: boolean) => void, id: an
             time,
             id,
         }
-        console.log(data)
         try {
             await dispatch(scheduleInterview(data)).unwrap()
         } catch (error) {

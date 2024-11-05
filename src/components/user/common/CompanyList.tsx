@@ -61,34 +61,28 @@ function CompanyList() {
         //         position: 'top-center'
         //     })
         // }
-        console.log(filterAndSearch)
         setStartNameSearch(!startNameSearch)
     }
 
     function handleCategory(e: any, _id: string) {
         const target = e.currentTarget; // or e.target if it's directly on the button
         const ariaChecked = target.getAttribute('aria-checked');
-        console.log('aria-checked value:', ariaChecked); // Should match what is in the DOM
 
         // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
-        console.log('asdf', newAriaChecked)
         setFilterAndSearch(prevState => {
             let updatedCategory;
 
             if (newAriaChecked === 'true') {
-                console.log('-i')
                 // Add category if checked
                 updatedCategory = [...prevState.category, _id];
             } else {
-                console.log('i-')
 
                 // Remove category if unchecked
                 updatedCategory = prevState.category.filter(id => id !== _id);
             }
 
-            console.log(updatedCategory)
             return {
                 ...prevState,
                 category: updatedCategory

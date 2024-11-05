@@ -89,7 +89,6 @@ function AddSectors() {
         if (!image) {
             setFieldError('image', 'Image is required')
             setSubmitting(false);
-            console.log('hiiii')
             return
 
         }

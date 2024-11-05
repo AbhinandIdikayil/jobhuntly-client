@@ -80,7 +80,6 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
             socket.emit('setup', user)
 
             const handleOnlineUsers = (val: any) => {
-                console.log(val)
                 const users = val?.filter((user: any) => user.role === 'user');
                 const companies = val?.filter((user: any) => user.role === 'company');
                 if (location.pathname === '/company/messages') {

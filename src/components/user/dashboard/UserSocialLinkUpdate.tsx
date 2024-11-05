@@ -64,7 +64,6 @@ export function SocialLinkForm({setOpen}:func) {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            console.log(values)
             await dispatch(updateUserProfile(values)).unwrap()
             setOpen(false);
         } catch (error) {

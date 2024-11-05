@@ -24,7 +24,6 @@ export const TechStackInput: React.FC<Techstack> = ({ label, name, stacks, setSt
 
     function handleClick(data: any) {
         setStacks((prev) => [...prev, data.name])
-        console.log(stacks)
     }
 
     function handleRemove(data: any) {

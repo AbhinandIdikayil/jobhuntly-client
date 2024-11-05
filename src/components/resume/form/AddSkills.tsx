@@ -4,6 +4,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
+import { generateUniqueKey } from 'src/utils/uniqueKey';
 
 function AddSkills() {
 
@@ -75,7 +76,7 @@ function AddSkills() {
         {
           resume?.skill?.length &&
           resume?.skill?.map((data: any, ind: number) => (
-            <div className='flex flex-col justify-between mb-2 border rounded-lg p-3 '>
+            <div key={generateUniqueKey()} className='flex flex-col justify-between mb-2 border rounded-lg p-3 '>
               <div>
                 <Input className="w-full"
                   defaultValue={data?.name}

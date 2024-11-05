@@ -40,7 +40,6 @@ function InterviewList({ applcantId, email, setLoading, date, image, name, testT
                         from: user?.user?.name, to: applcantId, link: `/home/interview/${room}=${applcantId}`,
                         data: 'Your interview has just started'
                     })
-                    console.log(data)
                     toast.success(data?.message ?? 'Email has sented')
                     return navigate(`/company/interview/${room}=${user?.user?._id}`, { //!     navigating to page containing id of company
                         state: {

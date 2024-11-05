@@ -46,7 +46,6 @@ export const ChatSocketProvider = ({ children }: Children) => {
     useEffect(() => {
         if (!socketRef.current) {
             const newSocket = io(String(process.env.CHAT_ORIGIN));
-            console.log('chat origin',process.env.CHAT_ORIGIN)
             newSocket.on('connect', () => {
                 setSocketConnected(true);
             });
@@ -78,10 +77,7 @@ export const ChatSocketProvider = ({ children }: Children) => {
     }, [socketRef])
 
     const handleNotification = (data: any) => {
-        console.log('HANDLE NOTIFICATION --- CHAT CONTEXT');
-        console.log(locationRef?.current)
         if (!locationRef?.current?.endsWith('messages') || data?.chatId !== selectedChat?._id) {
-            console.log(data, 'INSIDE IF CONDITION--------------------');
             setNotifications((prev: any) => [...prev, data]);
         } else {
         }

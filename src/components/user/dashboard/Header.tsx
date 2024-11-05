@@ -117,7 +117,6 @@ function Header({ func, open }: props) {
                                     {
                                         notifications?.length > 0 &&
                                         notifications?.map((data: any, ind: number) => {
-                                            console.log(data)
                                             return data?.from ? (
                                                 <div key={ind + data?.from} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1 border rounded shadow-md">
                                                     <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>

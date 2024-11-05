@@ -15,13 +15,11 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
     const [field,setField] = useState('')
 
     const handleSuggestionClick = (suggestion: any) => {
-        console.log(location)
         setLocation((prevLocation) => [...prevLocation, suggestion.csc]);
 
     };
 
     const removeLocation = (data: any) => {
-        console.log('hiii', location, data)
         setLocation(location.filter((dat:any) => dat._id != data._id))
     }
 

@@ -105,7 +105,6 @@ function EditProfile({ name, setOpen }: UserEditProfileProps) {
                 coverImage: imageUrl,
                 ...values
             }
-            console.log(req,imageUrl)
             dispatch(updateUserProfile(req)).unwrap()
             setOpen(false)
         } catch (error) {

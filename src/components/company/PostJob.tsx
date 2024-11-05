@@ -34,7 +34,6 @@ function PostJob() {
     
     function setSelectedSkill() {
         const matchingSkills = skillOption?.skills?.filter(skill => company?.user?.skills?.includes(skill.name));
-        console.log(matchingSkills)
         setSelectedSkills(matchingSkills)
     }
 
@@ -60,9 +59,6 @@ function PostJob() {
         qualification: [''],
     }
 
-    useEffect(() => {
-        console.log(location)
-    }, [])
 
     async function GenerateSummeryFromAI(title: string, skills: string[], responsibility: string[], qualification: string[]) {
         setLoading(true)
@@ -77,7 +73,6 @@ function PostJob() {
         const prompt = `Create a detailed job description for a ${title} position. The ideal candidate will possess the following skills: ${skillIntoString}. The responsibilities for this role include: ${responsibilities} and the qualification for this role ${qualifications} . all these in to one paragraph`
         try {
             const result = await AIChatSession.sendMessage(prompt)
-            console.log(JSON.parse(result.response.text()))
             setAiGeneratedDesc(JSON.parse(result.response.text()))
         } catch (error) {
             console.log(error)
@@ -88,7 +83,6 @@ function PostJob() {
 
     async function handleSubmit(values: FormikValues) {
         try {
-            console.log(values)
             if (location?.length > 1) {
                 return toast.error('Multiple location is restricted')
             }

@@ -14,8 +14,7 @@ function Login() {
 
   async function handleAdminLogin(values: FormikValues) {
     try {
-      const data = await dispatch(adminLogin(values)).unwrap()
-      console.log(data)
+      await dispatch(adminLogin(values)).unwrap()
       navigate('/admin/home')
     } catch (error) {
       console.log(error)

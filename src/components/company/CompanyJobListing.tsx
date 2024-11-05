@@ -317,7 +317,6 @@ function CompanyJobListing() {
                             variant="outline"
                             size="sm"
                             onClick={() => {
-                                console.log('hiii')
                                 table.previousPage()
                             }}
                             disabled={!table.getCanPreviousPage()}

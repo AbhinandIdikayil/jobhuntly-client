@@ -16,12 +16,10 @@ const TypeDate: React.FC<PasswordInputProps> = ({ label, name ,date ,setDate }) 
     const [isInvalid, setIsInvalid] = useState(false);
 
     const handleDateChange = (newDate:any) => {
-        console.log(date)
         const parsedDate = new CalendarDate(newDate.year, newDate.month, newDate.day);
         const today = new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
-        console.log(today, parsedDate)
+        console.log(date)
         const isValidDate = parsedDate.compare(today) >= 0; // Ensure the selected datE is not in the future
-        console.log(isInvalid, isValidDate)
         setDate(parsedDate);
         setIsInvalid(isValidDate);
     };

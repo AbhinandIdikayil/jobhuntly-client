@@ -46,7 +46,6 @@ function AddExperience() {
   }
 
   useEffect(() => {
-    console.log(experinceList)
     setResume({
       ...resume,
       experience: experinceList
@@ -57,7 +56,6 @@ function AddExperience() {
 
   const onSave = () => {
     setLoading(true)
-    console.log(experinceList)
     setLoading(false);
     toast('Details updated !')
 

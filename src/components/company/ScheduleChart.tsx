@@ -33,7 +33,6 @@ const ScheduleChart = () => {
                 };
             })
         ))
-        console.log(event)
         // ...event,
         // start: dayjs(String(event?.date)).toISOString()
         setEvents(event as any)

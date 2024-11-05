@@ -85,7 +85,6 @@ function AddEducationForm({setOpen}:UserAddEducation) {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log('hiiii')
         try {
             const updatedEducation = values.education.map(ed => ({
                 ...ed,
@@ -103,7 +102,6 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                 ]
             };
 
-            console.log('Payload:', payload);
             dispatch(updateUserProfile(payload)).unwrap()
             setOpen(false)
         } catch (error) {

@@ -109,7 +109,6 @@ function Jobs() {
     async function handleResume(data: string) {
         let userid = userState?.user._id;
         try {
-            console.log({ userid, jobid, resume: data, companyId })
             let res = await dispatch(applyJob({ userid, jobid, resume: data, companyId })).unwrap()
             if (res) {
                 setModalOpen(false)
@@ -128,12 +127,10 @@ function Jobs() {
     function handleCategory(e: any, _id: string) {
         const target = e.currentTarget; // or e.target if it's directly on the button
         const ariaChecked = target.getAttribute('aria-checked');
-        console.log('aria-checked value:', ariaChecked); // Should match what is in the DOM
 
         // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
-        console.log('asdf', newAriaChecked)
         setFilterAndSearch(prevState => {
             let updatedCategory;
 
@@ -169,7 +166,6 @@ function Jobs() {
                 updatedEmployment = prevState.employment.filter(id => id !== _id);
             }
 
-            console.log(updatedEmployment)
             return {
                 ...prevState,
                 employment: updatedEmployment
@@ -195,8 +191,7 @@ function Jobs() {
                 );
             }
 
-            const mergedRanges = mergeRanges(updatedPrice);
-            console.log(updatedPrice, mergedRanges)
+            mergeRanges(updatedPrice);
             return {
                 ...prevState,
                 price: updatedPrice
@@ -206,10 +201,6 @@ function Jobs() {
 
     function handleInputSalary() {
         setFilterAndSearch((prev: any) => {
-            console.log({
-                ...prev,
-                price: [minSalary, maxSalary]
-            })
             return {
                 ...prev,
                 price: [minSalary, maxSalary]
@@ -220,7 +211,6 @@ function Jobs() {
     const mergeRanges = (ranges: any) => {
         if (ranges.length === 0) return [];
         const sortedRanges = ranges.sort((a: any, b: any) => a[0] - b[0]);
-        console.log(sortedRanges)
         const merged = [sortedRanges?.[0]?.[0] || sortedRanges?.[0], sortedRanges?.[sortedRanges?.length - 1]?.[1] || sortedRanges?.[sortedRanges?.length - 1]];
         return merged
     };

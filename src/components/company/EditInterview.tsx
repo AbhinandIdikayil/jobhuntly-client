@@ -70,7 +70,6 @@ function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, i
     const applicant = useSelector((state: RootState) => state?.job?.applicant)
     function extractAmPm() {
         const match = applicant?.schedule?.[ind]?.time?.match(/(AM|PM)/i);
-        console.log(applicant?.schedule?.[ind]?.time?.substr(1, 5))
         return match ? match[0] : null;
     }
     let meridian = extractAmPm()
@@ -102,7 +101,6 @@ function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, i
                     time
                 }
             }
-            console.log(res)
             await dispatch(editInterview(res)).unwrap()
         } catch (error) {
             console.log(error)
@@ -168,7 +166,6 @@ function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, i
                                     type='date'
                                     value={field.value ? formatDate(field?.value) : ''}
                                     onChange={(e) => {
-                                        console.log(e.target.value)
                                         const valueAsDate = e.target.value ? new Date(e.target.value) : null;
                                         field.onChange(valueAsDate);
                                     }}

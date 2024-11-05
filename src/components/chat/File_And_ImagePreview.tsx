@@ -56,7 +56,6 @@ function File_And_ImagePreview({ setMessages, file, preview, setPreview, setFile
     }
     async function uploadFile() {
         try {
-            console.log(file);
             let url = await uploadToCloudinary(file)
             handleSubmit(url)
         } catch (error) {

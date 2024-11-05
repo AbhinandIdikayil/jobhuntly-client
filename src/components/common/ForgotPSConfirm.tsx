@@ -80,9 +80,7 @@ export function ProfileForm({ setOtpPage }: func) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
-      const data = await dispatch(verifyEmail(values)).unwrap()
-      console.log(data)
+      await dispatch(verifyEmail(values)).unwrap()
       setOtpPage(true)
     } catch (error) {
       console.log(error)

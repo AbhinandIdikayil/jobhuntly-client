@@ -53,7 +53,6 @@ function Overview() {
 
     useEffect(() => {
         fetchData()
-        console.log('hi from overview -----')
     }, [])
 
     useEffect(() => {

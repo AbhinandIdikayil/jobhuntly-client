@@ -58,7 +58,6 @@ function Profile() {
         if (image) {
             setPdfUrl(image)
             let url = URL.createObjectURL(image)
-            console.log(url)
             setPdf(url)
         }
     }
@@ -72,7 +71,6 @@ function Profile() {
                     image
                 ]
             }
-            console.log(payload);
             dispatch(updateUserProfile(payload)).unwrap();
             setModal(false)
         } catch (error) {
@@ -91,10 +89,7 @@ function Profile() {
     async function saveSkill() {
         const newSKill = skill?.map((data: any) => data?.name);
         try {
-            console.log(skill)
-            console.log(newSKill)
-            let data = await dispatch(updateUserProfile({ skills: newSKill })).unwrap()
-            console.log(data)
+            await dispatch(updateUserProfile({ skills: newSKill })).unwrap()
         } catch (error) {
             console.log(error)
         }
@@ -102,7 +97,6 @@ function Profile() {
 
     function setSelectedSkill() {
         const matchingSkills = skills.filter(skill => state?.user?.skills?.includes(skill.name));
-        console.log(matchingSkills)
         setSelectedSkills(matchingSkills)
     }
 

@@ -65,7 +65,6 @@ function AdditionalDetailsForm({ setOpen }: func) {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
         try {
             dispatch(updateUserProfile(values)).unwrap()
             setOpen(false)

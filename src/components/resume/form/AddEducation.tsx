@@ -4,6 +4,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
+import { generateUniqueKey } from 'src/utils/uniqueKey';
 
 function AddEducation() {
 
@@ -67,7 +68,7 @@ function AddEducation() {
 
       <div>
         {educationalList.map((item: any, index: number) => (
-          <div>
+          <div key={generateUniqueKey()}>
             <div className='grid grid-cols-2 gap-3 border p-3 my-5 rounded-lg'>
               <div className='col-span-2'>
                 <label>University Name</label>
