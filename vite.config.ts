@@ -15,7 +15,7 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
+    minify: false,
   },
   define: {
     'process.env': process.env
