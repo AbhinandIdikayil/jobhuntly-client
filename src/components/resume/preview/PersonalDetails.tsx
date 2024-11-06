@@ -1,5 +1,5 @@
 
-function PersonalDetails({ data }: { data: any }) {
+export function PersonalDetails({ data }: { data: any }) {
   return (
     <div>
       <h2 className='font-bold text-xl text-center'
@@ -35,4 +35,3 @@ function PersonalDetails({ data }: { data: any }) {
   )
 }
 
-export default PersonalDetails

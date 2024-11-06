@@ -1,5 +1,5 @@
 
-function ExperiencePreview({ data }: { data: any }) {
+export function ExperiencePreview({ data }: { data: any }) {
     return (
         <div className='my-6'>
             <h2 className='text-center font-bold text-sm mb-2'
@@ -27,7 +27,7 @@ function ExperiencePreview({ data }: { data: any }) {
                         style={{
                             listStyleType: 'decimal',
                             paddingLeft: '20px', // Ensure there's padding for the numbers
-                            margin: '0',
+                            margin: '0', 
                             color: 'inherit', // Ensure the color is inherited properly
                             fontSize: '12px', // Ensure the font size matches
                         }}
@@ -38,4 +38,3 @@ function ExperiencePreview({ data }: { data: any }) {
     )
 }
 
-export default ExperiencePreview

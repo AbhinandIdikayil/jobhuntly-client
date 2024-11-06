@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom"
 import { generateUniqueKey } from "src/utils/uniqueKey";
 
-function SkillsPreview({ data }: { data: any }) {
+export function SkillsPreview({ data }: { data: any }) {
     const location = useLocation();
     let path = location.pathname
     return (
@@ -41,4 +41,3 @@ function SkillsPreview({ data }: { data: any }) {
     )
 }
 
-export default SkillsPreview

@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import PersonalDetails from './preview/PersonalDetails'
-import { UseResumeContext } from 'src/context/ResumeContext'
 import ha from './data/dummy'
-import SummarPreview from './preview/SummarPreview'
-import ExperiencePreview from './preview/ExperiencePreview'
-import EducationalPreview from './preview/EducationalPreview'
-import SkillsPreview from './preview/SkillsPreview'
 import { useLocation } from 'react-router-dom'
+import { SummarPreview } from './preview/SummarPreview'
+import { SkillsPreview } from './preview/SkillsPreview'
+import { ExperiencePreview } from './preview/ExperiencePreview'
+import { EducationalPreview } from './preview/EducationalPreview'
+import { PersonalDetails } from './preview/PersonalDetails'
+import { UseResumeContext } from 'src/context/ResumeContext'
 
 export function ResumePreview() {
   const { resume, setResume } = UseResumeContext()
@@ -25,7 +25,7 @@ export function ResumePreview() {
         borderColor: resume?.themeColor || '#000'
       }}>
       {/* Persoanal details */}
-      < PersonalDetails data={resume || {}} />
+      <PersonalDetails data={resume || {}} />
       {/* summary */}
       <SummarPreview data={resume || {}} />
 

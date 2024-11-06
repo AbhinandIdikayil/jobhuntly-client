@@ -1,5 +1,5 @@
 
-function EducationalPreview({ data }: { data: any }) {
+export function EducationalPreview({ data }: { data: any }) {
     return (
         <div className='my-6'>
             <h2 className='text-center font-bold text-sm mb-2'
@@ -31,4 +31,3 @@ function EducationalPreview({ data }: { data: any }) {
     )
 }
 
-export default EducationalPreview

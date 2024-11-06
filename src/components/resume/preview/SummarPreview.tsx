@@ -1,5 +1,5 @@
 
-function SummarPreview({ data }: { data: any }) {
+export function SummarPreview({ data }: { data: any }) {
     return (
         <p className='text-xs'>
             {data?.summery}
@@ -7,4 +7,3 @@ function SummarPreview({ data }: { data: any }) {
     )
 }
 
-export default SummarPreview
