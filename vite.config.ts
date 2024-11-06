@@ -14,13 +14,16 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
+  build: {
+    sourcemap: true,
+  },
   define: {
     'process.env': process.env
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./@"),
-      'src': path.resolve(__dirname, './src') 
+      'src': path.resolve(__dirname, './src')
     },
   },
 })

@@ -1,12 +1,9 @@
 import { Button } from '@/components/ui/button'
-import ResumePreview from 'src/components/resume/ResumePreview'
 import { RWebShare } from 'react-web-share'
+import { ResumePreview } from 'src/components/resume/ResumePreview'
 import { UseResumeContext } from 'src/context/ResumeContext'
 function ResumeView() {
-
-
     const { resume } = UseResumeContext()
-
 
     const HandleDownload = () => {
         let res = document.getElementById('print-area')
@@ -29,7 +26,7 @@ function ResumeView() {
                         <RWebShare
                             data={{
                                 text: "Hello Everyone, This is my resume please open url to see it",
-                                url:  process.env.BASE_URL_CLIENT + "/my-resume/view",
+                                url:  '',
                                 title: resume?.firstName + " " + resume?.lastName + " resume",
                             }}
                             onClick={() => console.log("shared successfully!")}

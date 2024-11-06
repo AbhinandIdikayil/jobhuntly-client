@@ -7,7 +7,7 @@ import ExperiencePreview from './preview/ExperiencePreview'
 import EducationalPreview from './preview/EducationalPreview'
 import SkillsPreview from './preview/SkillsPreview'
 import { useLocation } from 'react-router-dom'
-function ResumePreview() {
+export function ResumePreview() {
   const { resume, setResume } = UseResumeContext()
   const location = useLocation();
   const { state } = location;
@@ -41,4 +41,3 @@ function ResumePreview() {
   )
 }
 
-export default ResumePreview
