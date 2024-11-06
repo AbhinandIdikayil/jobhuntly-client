@@ -43,7 +43,6 @@ import Schedules from './pages/company/Schedules'
 import ResumeHome from './pages/resume/ResumeHome'
 import ResumeForm from './pages/resume/CreateResume'
 import ResumeView from './pages/resume/ResumeView'
-import { ResumeContextProvider } from './context/ResumeContext'
 import Quiz from './pages/quiz/Quiz'
 import Interview from './pages/Interview'
 import Call from './pages/call/Call'
@@ -53,6 +52,7 @@ import { setGlobalDispatch } from './redux/global'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from './redux/store'
 import SIde from './components/user/SIde'
+import { ResumeContextProvider } from './context/ResumeContext'
 
 
 function App() {

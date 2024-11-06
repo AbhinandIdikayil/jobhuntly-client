@@ -16,7 +16,7 @@ function ThemeColor() {
 
     const { resume, setResume } = UseResumeContext();
     const [selectedColor, setSelectedColor] = useState<string>();
-    const onColorSelect = (color:string) => {
+    const onColorSelect = (color: string) => {
         setSelectedColor(color)
         setResume({
             ...resume,
@@ -36,6 +36,7 @@ function ThemeColor() {
                 <div className='grid grid-cols-5 gap-3'>
                     {colors.map((item) => (
                         <div
+                            key={item}
                             onClick={() => onColorSelect(item)}
                             className={`h-5 w-5 rounded-full cursor-pointer
              hover:border-black border
