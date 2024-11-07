@@ -12,7 +12,6 @@ function ResumeView() {
             window.print();
         }
     }
-    console.log(process.env.BASE_URL_CLIENT + "/my-resume/view")
     return (
         <>
             <div id="no-print">

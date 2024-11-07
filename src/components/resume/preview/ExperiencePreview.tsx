@@ -31,7 +31,7 @@ export function ExperiencePreview({ data }: { data: any }) {
                             color: 'inherit', // Ensure the color is inherited properly
                             fontSize: '12px', // Ensure the font size matches
                         }}
-                        dangerouslySetInnerHTML={{ __html: experience?.workSummery }} />
+                        dangerouslySetInnerHTML={{ __html: experience?.workSummery || '' }} />
                 </div>
             ))}
         </div>

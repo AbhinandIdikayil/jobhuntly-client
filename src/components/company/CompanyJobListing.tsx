@@ -9,6 +9,7 @@ import { useEffect, useState, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { UseDebounce } from 'src/hooks/Debounce'
+import { listSkills } from 'src/redux/actions/adminAction'
 import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
 import { setJobById } from 'src/redux/reducers/jobSlice'
 import { AppDispatch, RootState } from 'src/redux/store'
@@ -196,6 +197,10 @@ function CompanyJobListing() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
     });
+
+    useEffect(() => {
+        dispatch(listSkills()).unwrap()
+    })
 
     useEffect(() => {
         setLoading(true)

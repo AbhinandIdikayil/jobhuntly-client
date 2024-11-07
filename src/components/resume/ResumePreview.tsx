@@ -12,6 +12,7 @@ export function ResumePreview() {
   const { resume, setResume } = UseResumeContext()
   const location = useLocation();
   const { state } = location;
+
   useEffect(() => {
     if (state) {
       setResume(state)

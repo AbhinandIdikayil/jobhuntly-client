@@ -19,7 +19,7 @@ function JobEdting() {
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state?.job)
     const categoryState = useSelector((state: RootState) => state?.category)
-    const skillsOption = useSelector((state:RootState) => state?.admin?.skills)
+    const skillsOption = useSelector((state: RootState) => state?.admin?.skills)
     const navigate = useNavigate()
     const [location, setLocation] = useState<any>([])
     const [selectedSkills, setSelectedSkills] = useState<any>([])
@@ -46,14 +46,15 @@ function JobEdting() {
             if (location?.length > 1) {
                 return toast.error('Multiple locations are restricted')
             }
-            if(skill?.length < 1){
+            if (skill?.length < 1) {
                 toast.error('Add morethan 1 skill')
                 return;
             }
+
             const newSKill = skill?.map((data: any) => data?.name);
 
             //! here i passed an id, it is used to pass as  params 
-            await dispatch(updateJob({ data: { ...values, location, skills:newSKill }, id: state?.job?._id })).unwrap()
+            await dispatch(updateJob({ data: { ...values, location, skills: newSKill }, id: state?.job?._id })).unwrap()
             toast.success('job updated successfully', { position: 'top-center' })
             navigate('/company/job-list')
         } catch (error) {
@@ -62,9 +63,10 @@ function JobEdting() {
     }
 
     function setSelectedSkill() {
-        const matchingSkills = skillsOption?.filter(skill =>  state?.job?.job?.skills?.includes(skill.name));
-        console.log(matchingSkills)
+        const matchingSkills = skillsOption?.filter(skill => state?.job?.job?.skills?.includes(skill.name));
+        console.log(matchingSkills, 'matching skill')
         setSelectedSkills(matchingSkills)
+        setSkills(matchingSkills)
     }
 
     useEffect(() => {
