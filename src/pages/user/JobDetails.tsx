@@ -19,11 +19,8 @@ function JobDetails() {
         window.scroll(0,0)
         if (id) {
             dispatch(setJobById(id))
-
-            console.log(state.job)
         }
     }, [id, location])
-    console.log(id, location.pathname)
 
     function formatDate(date: string) {
         if (date) {

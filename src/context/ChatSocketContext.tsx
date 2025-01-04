@@ -45,7 +45,13 @@ export const ChatSocketProvider = ({ children }: Children) => {
 
     useEffect(() => {
         if (!socketRef.current) {
-            const newSocket = io(String(process.env.CHAT_ORIGIN));
+            const newSocket = io(String(process.env.CHAT_ORIGIN), {
+                withCredentials: true,
+                transports: ['websocket', 'polling'],
+                extraHeaders: {
+                    "X-Socket-ID": "your-socket-id" // if needed
+                }
+            });
             newSocket.on('connect', () => {
                 setSocketConnected(true);
             });
@@ -65,13 +71,13 @@ export const ChatSocketProvider = ({ children }: Children) => {
 
     useEffect(() => {
         function interview(data: any) {
-            setNotifications((prev: any) => [...prev,data])
+            setNotifications((prev: any) => [...prev, data])
         }
-        if(socketRef?.current){
-            socketRef?.current?.on('interviewee',interview)
+        if (socketRef?.current) {
+            socketRef?.current?.on('interviewee', interview)
 
             return () => {
-                socketRef.current?.off('interviewee',interview)
+                socketRef.current?.off('interviewee', interview)
             }
         }
     }, [socketRef])
