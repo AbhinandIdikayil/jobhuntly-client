@@ -74,7 +74,7 @@ function Navbar() {
                         user?.user ? (
                             <div className='flex justify-center items-center gap-1 sm:gap-4 '>
                                 <button onClick={handleLogout} className="px-3 md:px-6 py-1 text-xs md:text-base sm:py-3 text-white bg-indigo-600 max-sm:rounded-md my-auto">Logout</button>
-                                <NavLink to='/Dashboard' className="text-indigo-600 text-xs md:text-base">Dashboard</NavLink>
+                                <NavLink to='/dashboard' className="text-indigo-600 text-xs md:text-base">Dashboard</NavLink>
                             </div>
                         ) : (
                             <>

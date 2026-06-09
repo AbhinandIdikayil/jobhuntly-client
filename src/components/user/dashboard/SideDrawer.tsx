@@ -109,7 +109,7 @@ function SideDrawer({ handleDrawerClose, handleDrawerOpen, open }: props) {
             {mainNavItems.map((item) => (
               <NavLink
                 key={item.text}
-                to={`/Dashboard/${item.link}`}
+                to={`/dashboard/${item.link}`}
                 end={item.link === ''}
                 className="sidebar-nav-link"
               >
@@ -170,7 +170,7 @@ function SideDrawer({ handleDrawerClose, handleDrawerOpen, open }: props) {
             {bottomNavItems.map((item) => (
               <NavLink
                 key={item.text}
-                to={`/Dashboard/${item.link}`}
+                to={`/dashboard/${item.link}`}
                 className="sidebar-nav-link"
               >
                 {({ isActive }) => (

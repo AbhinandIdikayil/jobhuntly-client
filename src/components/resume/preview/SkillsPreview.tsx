@@ -24,7 +24,7 @@ export function SkillsPreview({ data }: { data: any }) {
                             </div>
                             <div
                                 className={`
-                                ${path == '/Dashboard/resume/create'
+                                ${path == '/dashboard/resume/create'
                                         ? ' w-[230px] max-md:w-2/3' : 'w-full text-right' 
                                 }
                                h-full break-words`}

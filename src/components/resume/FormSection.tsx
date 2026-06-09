@@ -48,7 +48,7 @@ function FormSection() {
               : activeFormIndex == 5 ?
                 <AddSkills />
                 : activeFormIndex == 6 ?
-                  <Navigate state={resume} to={'/Dashboard/resume/view'} />
+                  <Navigate state={resume} to={'/dashboard/resume/view'} />
 
                   : null
       }

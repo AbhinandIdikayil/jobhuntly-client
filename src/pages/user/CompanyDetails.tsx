@@ -2,125 +2,107 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import CompanyDetailsHeader from "src/components/common/CompanyDetailsHeader";
 import { prop } from "src/types/AllTypes";
-// import stack from '../../assets/techstacks.json'
 
 function CompanyDetails() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
-    const location = useLocation()
-    const { state } = location
+    const location = useLocation();
+    const { state } = location;
+
     return (
-        <div className={`flex flex-col items-center justify-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
-            <CompanyDetailsHeader data={state} />
-            <div className={`flex flex-col sm:flex-row gap-5 items-start  ${open ? 'px-5 py-5' : 'px-10 py-10'}  w-full bg-white `}>
-                <div className="flex flex-col grow shrink w-full sm:w-1/2">
-                    <div className="flex flex-col max-w-full ">
-                        <div className="flex flex-col w-full">
-                            <div className="text-3xl font-semibold leading-tight text-slate-800">
-                                Company Profile
-                            </div>
-                            <div className={`
-                            mt-4 text-base leading-7 text-slate-600 
-                            `}>
-                                {state?.description}
-                            </div>
+        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_48%,#f8fafc_100%)] ${open ? '' : ''}`}>
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <CompanyDetailsHeader data={state} />
+
+                <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_360px]">
+                    <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)] sm:p-8">
+                        <div className="text-2xl font-semibold tracking-tight text-slate-900">
+                            Company profile
                         </div>
-                        <div className="flex flex-col items-start mt-6 w-full text-base font-medium leading-relaxed text-indigo-600 whitespace-nowrap max-w-[752px] max-md:max-w-full">
-                            <div className="self-stretch text-3xl font-semibold leading-tight text-slate-800">
+                        <p className="mt-4 max-w-4xl text-sm leading-7 text-slate-600 sm:text-base">
+                            {state?.description}
+                        </p>
+
+                        <div className="mt-8 border-t border-zinc-200 pt-6">
+                            <div className="text-2xl font-semibold tracking-tight text-slate-900">
                                 Contact
                             </div>
-                            <div className="flex flex-wrap gap-4 items-start mt-4 w-full max-md:max-w-full">
-                                {
-                                    state.socialLinks.map((data:any) => {
-                                        if (data.includes('twitter')) {
-                                            return (
-                                                <div className="flex gap-4 items-start p-2">
-                                                    <Twitter />
-                                                    <div>{data.substr(8)}</div>
-                                                </div>
-                                            )
-                                        } else if (data.includes('instagram')) {
-                                            return (
-                                                <div className="flex gap-4 items-start p-2">
-                                                    <Instagram />
-                                                    <div>{data.substr(8)}</div>
-                                                </div>
-                                            )
-                                        } else if (data.length > 0) {
-                                            return (
-                                                <div className="flex gap-4 items-start p-2">
-                                                    <Facebook />
+                            <div className="mt-5 flex flex-wrap gap-3">
+                                {state?.socialLinks?.map((data: string, index: number) => {
+                                    if (data.includes('twitter')) {
+                                        return (
+                                            <div key={index} className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                                                <Twitter size={18} className="text-sky-500" />
+                                                <div>{data.substr(8)}</div>
+                                            </div>
+                                        )
+                                    }
 
-                                                    <div>{data.substr(8)}</div>
-                                                </div>
-                                            )
-                                        }
-                                    })
-                                }
+                                    if (data.includes('instagram')) {
+                                        return (
+                                            <div key={index} className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                                                <Instagram size={18} className="text-pink-500" />
+                                                <div>{data.substr(8)}</div>
+                                            </div>
+                                        )
+                                    }
 
+                                    if (data.length > 0) {
+                                        return (
+                                            <div key={index} className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                                                <Facebook size={18} className="text-blue-600" />
+                                                <div>{data.substr(8)}</div>
+                                            </div>
+                                        )
+                                    }
+
+                                    return null;
+                                })}
                             </div>
-                            <div className="flex gap-4 items-center p-2 mt-4">
+
+                            <div className="mt-4 flex items-center gap-3 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
                                 <img
                                     loading="lazy"
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/f776a6f75ce5554e99557a08cf3868e21ff513b6544753d4c7fd8c41f59b65a5?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                    className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
+                                    className="h-6 w-6 object-contain"
                                 />
-                                <div className="self-stretch my-auto">
-                                    {state?.LinkedInLink.substr(8)}
-                                    {/* linkedin.com/company/stripe */}
+                                <div className="break-all">
+                                    {state?.LinkedInLink?.substr(8)}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex flex-col  shrink min-w-[240px] w-[301px]">
-                    <div className="flex flex-col max-w-full w-[376px]">
-                        <div className="flex flex-col w-full">
-                            <div className="max-w-full text-3xl font-semibold leading-tight rounded-none text-slate-800 w-[174px]">
+
+                    <div className="space-y-6">
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="text-2xl font-semibold tracking-tight text-slate-900">
                                 Tech stack
                             </div>
-                            <div className="mt-4 text-base leading-7 text-slate-600">
-                                Learn about the technology and tools that {state?.name} uses.{" "}
-                            </div>
-                        </div>
-                        <div className="flex flex-col self-start mt-4 w-[297px] h-full text-base leading-relaxed text-slate-800">
-                            <div className="flex flex-wrap items-start">
-                                {
-                                    state.techStack.map((data:any) => (
-                                        <div className="flex flex-col items-center p-3 w-[98px]">
-                                            <picture>
-                                                <source
-                                                    media="(prefers-color-scheme: light)"
-                                                    srcSet={`https://deviconapi.vercel.app/${data}?theme=light&size=50`} />
-                                                {/* <img src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${data.name}/${data.name}-original.svg?size=10`} /> */}
-
-                                                <img src={`https://deviconapi.vercel.app/${data}?theme=lig&size=50`} />
-                                            </picture>
-
-                                            <div className="mt-2.5"> {data} </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                        <div className="mt-4 w-full min-h-[1px]" />
-                    </div>
-                    <div className="flex flex-col mt-10 w-full max-w-[376px]">
-                        <div className="flex flex-col w-full">
-                            <div className="text-3xl font-semibold leading-tight text-slate-900">
-                                Office Location
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-start self-start mt-6 text-base font-semibold leading-relaxed ">
-                            {
-                                state.locations.map((data:any) => (
-                                    <div className="flex gap-3 items-center self-stretch">
-                                        <div className="self-stretch my-auto"> {data} </div>
+                            <p className="mt-3 text-sm leading-7 text-slate-600">
+                                Learn about the technology and tools that {state?.name} uses.
+                            </p>
+                            <div className="mt-5 flex flex-wrap gap-3">
+                                {state?.techStack?.map((data: string) => (
+                                    <div key={data} className="flex flex-col items-center rounded-2xl border border-zinc-200 bg-slate-50 px-3 py-3 text-sm text-slate-700 shadow-sm">
+                                        <img src={`https://deviconapi.vercel.app/${data}?theme=light&size=50`} className="h-10 w-10 object-contain" />
+                                        <div className="mt-2 text-center">{data}</div>
                                     </div>
-                                ))
-                            }
+                                ))}
+                            </div>
                         </div>
-                        <div className="mt-6 w-full min-h-[1px]" />
+
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="text-2xl font-semibold tracking-tight text-slate-900">
+                                Office location
+                            </div>
+                            <div className="mt-5 space-y-3">
+                                {state?.locations?.map((data: string) => (
+                                    <div key={data} className="rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+                                        {data}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,5 +111,3 @@ function CompanyDetails() {
 }
 
 export default CompanyDetails
-
-

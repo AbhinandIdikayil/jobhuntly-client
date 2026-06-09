@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Accordion } from '@/components/ui/accordion'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,8 @@ import { BootstrapInput } from 'src/components/common/BootsrapInput';
 import SectoresAccordian from 'src/components/common/SectoresAccordian';
 import Lottie from 'lottie-react'
 import animation from 'src/animation/Animation - 1728884349481.json'
+import { Search, Sparkles } from 'lucide-react';
+
 interface FilterAndSearch {
     name: string;
     location: string;
@@ -36,7 +38,8 @@ function CompanyList() {
         location: ''
     })
     const [startNameSearch, setStartNameSearch] = useState<boolean>(false)
-    const page = Math.ceil((state?.companies?.totalCount?.[0]?.count || 5) / pagination.pageSize)
+    const totalCompanies = state?.companies?.totalCount?.[0]?.count || 0
+    const page = Math.max(1, Math.ceil((totalCompanies || 5) / pagination.pageSize))
 
     const fetchData = async (page: number, pageSize: number, name?: string, category?: string[], location?: string) => {
         try {
@@ -56,32 +59,18 @@ function CompanyList() {
     }
 
     function handleSearch() {
-        // if (filterAndSearch?.name?.trim().length == ) {
-        //     return toast.error('At least 2 character', {
-        //         position: 'top-center'
-        //     })
-        // }
         setStartNameSearch(!startNameSearch)
     }
 
     function handleCategory(e: any, _id: string) {
-        const target = e.currentTarget; // or e.target if it's directly on the button
+        const target = e.currentTarget;
         const ariaChecked = target.getAttribute('aria-checked');
-
-        // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
         setFilterAndSearch(prevState => {
-            let updatedCategory;
-
-            if (newAriaChecked === 'true') {
-                // Add category if checked
-                updatedCategory = [...prevState.category, _id];
-            } else {
-
-                // Remove category if unchecked
-                updatedCategory = prevState.category.filter(id => id !== _id);
-            }
+            const updatedCategory = newAriaChecked === 'true'
+                ? [...prevState.category, _id]
+                : prevState.category.filter(id => id !== _id);
 
             return {
                 ...prevState,
@@ -101,165 +90,160 @@ function CompanyList() {
     }, [pagination?.pageIndex, pagination?.pageSize, filterAndSearch?.category, startNameSearch])
 
     return (
-        <>
-            <div className={`flex flex-col items-center justify-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
-                <div className={`${open && open ? 'hidden' : ''} `}>
-                    <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
-                        <div className="self-start text-slate-800 max-md:text-4xl">
-                            Find your
+        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_50%,#f8fafc_100%)] ${open ? '' : ''}`}>
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <section className="relative overflow-hidden rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_34%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.08),_transparent_32%)]" />
+                    <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="max-w-2xl">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                                <Sparkles size={14} />
+                                Company directory
+                            </div>
+                            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                                Discover the companies hiring right now.
+                            </h1>
+                            <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
+                                Explore company profiles with a cleaner search flow, richer cards, and a more editorial visual hierarchy.
+                            </p>
                         </div>
-                        <div className={`flex-col text-sky-400 max-md:text-4xl`}>
-                            <div className="max-md:text-4xl">dream job</div>
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c5387d8afcfab9fd00e94a5a0ff7e7093a6a80b56f15adaf6cecf8274992e61?"
-                                className="self-center aspect-[16.67] w-[241px]"
-                            />
-                        </div>
-                    </div>
-                    <div className={`hidden sm:block mt-6 text-lg leading-7 text-center text-slate-600 max-md:max-w-full`}>
-                        Find your next career at companies like HubSpot, Nike, and Dropbox
-                    </div>
-                </div>
-                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-                <div className="p-6 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col">
-                        <FormControl sx={{ m: 1 }} variant="standard">
-                            <InputLabel
-                                htmlFor="demo-customized-textbox"
-                            >
-                                Search company name
-                            </InputLabel>
-                            <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
-                        </FormControl>
-                        <FormControl sx={{ m: 1 }} variant="standard">
-                            <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
-                            <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })} id="demo-customized-textbox" />
-                        </FormControl>
-                        <Button
-                            onClick={handleSearch}
-                            sx={{
-                                m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
-                                    backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
-                                }
-                            }}
-                            variant='outlined'
-                        >
-                            search companies
-                        </Button>
-                    </div>
-                </div>
-                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-            </div>
-            <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
-                <div className="w-full max-w-[1192px] max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col">
-                        <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col text-base leading-6 text-slate-900">
-                                <Accordion type="multiple" className="w-full">
-                                    <SectoresAccordian handleCategory={handleCategory} />
 
-                                    <AccordionItem value="item-2" className=' border px-2 rounded-lg mt-1 shadow-sm'>
-                                        <AccordionTrigger className='font-bold text-sm'>Company size</AccordionTrigger>
-                                        <AccordionContent>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    1-50 (25)
-                                                </label>
-                                            </div>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    1-50 (25)
-                                                </label>
-                                            </div>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </Accordion>
+                        <div className="w-full max-w-3xl rounded-[28px] border border-zinc-200 bg-white/90 p-4 shadow-sm backdrop-blur">
+                            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
+                                <FormControl sx={{ m: 0 }} variant="standard">
+                                    <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
+                                    <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
+                                </FormControl>
+                                <FormControl sx={{ m: 0 }} variant="standard">
+                                    <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
+                                    <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })} id="demo-customized-textbox" />
+                                </FormControl>
+                                <Button
+                                    onClick={handleSearch}
+                                    sx={{
+                                        m: 0,
+                                        height: '52px',
+                                        marginTop: { xs: '8px', lg: '22px' },
+                                        backgroundColor: 'rgb(79 70 229)',
+                                        color: 'white',
+                                        borderRadius: '16px',
+                                        fontWeight: '700',
+                                        paddingInline: '24px',
+                                        '&:hover': {
+                                            backgroundColor: 'rgb(67 56 202)',
+                                        }
+                                    }}
+                                    variant='contained'
+                                    startIcon={<Search size={18} />}
+                                >
+                                    Search companies
+                                </Button>
                             </div>
                         </div>
-                        <div className="flex flex-col ml-5 w-[82%] max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col grow max-md:mt-10 max-md:max-w-full">
-                                <div className="flex gap-5 justify-between px-px w-full max-md:flex-wrap max-md:max-w-full">
+                    </div>
+                </section>
+
+                <div className="mt-6 rounded-[32px] border border-zinc-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                    <div className="p-6 sm:p-8">
+                        <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
+                            <aside className="lg:w-[300px]">
+                                <div className="rounded-[28px] border border-zinc-200 bg-white p-4 shadow-sm">
+                                    <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                                        Filters
+                                    </div>
+                                    <Accordion type="multiple" className="w-full">
+                                        <SectoresAccordian handleCategory={handleCategory} />
+
+                                        <div className='mt-1 rounded-2xl border border-zinc-200 bg-white p-2 shadow-sm'>
+                                            <div className='px-2 py-2 text-sm font-semibold text-slate-800'>
+                                                Company size
+                                            </div>
+                                            <div className='space-y-3 px-2 pb-2'>
+                                                <div className='flex flex-wrap gap-2 items-center justify-start rounded-xl px-2 py-2 hover:bg-indigo-50/60 transition-colors'>
+                                                    <Checkbox id="terms2" className='border-zinc-300 text-indigo-600' />
+                                                    <label htmlFor="terms2" className="text-sm font-medium leading-none text-slate-700">
+                                                        1-50 (25)
+                                                    </label>
+                                                </div>
+                                                <div className='flex flex-wrap gap-2 items-center justify-start rounded-xl px-2 py-2 hover:bg-indigo-50/60 transition-colors'>
+                                                    <Checkbox id="terms3" className='border-zinc-300 text-indigo-600' />
+                                                    <label htmlFor="terms3" className="text-sm font-medium leading-none text-slate-700">
+                                                        50-200 (18)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Accordion>
+                                </div>
+                            </aside>
+
+                            <div className="flex-1">
+                                <div className="flex flex-col gap-4">
                                     <div className="flex flex-col text-slate-900">
-                                        <div className="text-3xl font-semibold leading-10">
+                                        <div className="text-3xl font-semibold tracking-tight">
                                             All Companies
                                         </div>
-                                        <span className="font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm">
-                                            showing
-                                            {' '}
-                                            {state?.companies?.totalCount?.[0]?.count}
-                                            {' '}
-                                            result
+                                        <span className="mt-2 inline-flex w-fit rounded-full border border-zinc-200 bg-slate-50 px-3 py-1 text-sm font-semibold text-slate-600 shadow-sm">
+                                            showing {totalCompanies} result{totalCompanies === 1 ? '' : 's'}
                                         </span>
                                     </div>
-                                </div>
-                                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
+
+                                    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-2'>
+                                        {
+                                            state?.companies?.companies?.length > 0 &&
+                                            state?.companies?.companies.map((data: any, index) => {
+                                                return data?.approvalStatus === 'Accepted' && (
+                                                    <CompanyCard key={index} data={data} />
+                                                )
+                                            })
+                                        }
+                                    </div>
+
                                     {
-                                        state?.companies?.companies?.length > 0 &&
-                                        state?.companies?.companies.map((data: any, index) => {
-                                            return data?.approvalStatus === 'Accepted' && (
-                                                <CompanyCard key={index} data={data} />
-                                            )
-                                        })
+                                        state?.companies?.companies?.length == 0 && (
+                                            <div className='flex min-h-[420px] items-center justify-center rounded-[28px] border border-dashed border-zinc-200 bg-white'>
+                                                <Lottie className='w-full max-w-lg' animationData={animation} />
+                                            </div>
+                                        )
                                     }
-                                </div>
-                                {
-                                    state?.companies?.companies?.length == 0 && (
-                                        <div className='w-full h-96'>
-                                            <Lottie className='w-full h-full' animationData={animation} />
-                                        </div>
-                                    )
-                                }
-                                <div className='flex items-center justify-center gap-2 font-bold'>
-                                    <Button
-                                        variant="contained"
-                                        onClick={() => {
-                                            if (pagination.pageIndex < page) {
-                                                if (pagination.pageIndex + 1 > 1) {
+
+                                    <div className='flex items-center justify-center gap-3 rounded-[24px] border border-zinc-200 bg-white px-4 py-3 font-bold shadow-sm'>
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => {
+                                                if (pagination.pageIndex > 0) {
                                                     setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
                                                 }
-                                            }
-                                        }}
-                                        className="h-8 w-8 p-0"
-                                    >
-                                        <span className="sr-only">Go to first page</span>
-                                        <DoubleArrowLeftIcon className="h-4 w-4" />
-                                    </Button>
-                                    {
-                                        <span className='font-thin'>
+                                            }}
+                                            className="h-10 w-10 rounded-full bg-indigo-600 p-0 shadow-sm hover:bg-indigo-700"
+                                        >
+                                            <span className="sr-only">Previous page</span>
+                                            <DoubleArrowLeftIcon className="h-4 w-4" />
+                                        </Button>
+                                        <span className='rounded-full bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600'>
                                             page {pagination?.pageIndex + 1} of {page}
                                         </span>
-                                    }
-                                    <Button
-                                        variant="contained"
-                                        className={`h-8 w-8 p-0`}
-                                        onClick={() => {
-                                            if (pagination.pageIndex < page) {
+                                        <Button
+                                            variant="contained"
+                                            className="h-10 w-10 rounded-full bg-indigo-600 p-0 shadow-sm hover:bg-indigo-700"
+                                            onClick={() => {
                                                 if (pagination.pageIndex + 1 < page) {
                                                     setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
                                                 }
-                                            }
-                                        }}
-                                    >
-                                        <span className="sr-only">Go to first page</span>
-                                        <DoubleArrowRightIcon className="h-4 w-4" />
-                                    </Button>
+                                            }}
+                                        >
+                                            <span className="sr-only">Next page</span>
+                                            <DoubleArrowRightIcon className="h-4 w-4" />
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Loading loading={loading} key={'company-loading'} />
             </div>
-        </>
+            <Loading loading={loading} key={'company-loading'} />
+        </div>
     )
 }
 

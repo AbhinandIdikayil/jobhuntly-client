@@ -23,7 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import Lottie from 'lottie-react'
 import animation from 'src/animation/Animation - 1728884349481.json'
-
+import { Search, Sparkles } from 'lucide-react';
 
 function Jobs() {
     const context = useOutletContext<prop>() || {};
@@ -32,9 +32,9 @@ function Jobs() {
     const userState = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch()
     const [modalOpen, setModalOpen] = useState<boolean>(false)
-    const [pdf, setPdf] = useState([])
-    const [jobid, setJobId] = useState()
-    const [companyId, setCompanyId] = useState()
+    const [pdf, setPdf] = useState<any[]>([])
+    const [jobid, setJobId] = useState<string>()
+    const [companyId, setCompanyId] = useState<string>()
     const [loading, setLoading] = useState(false)
     const [minSalary, setMinSalary] = useState<number>()
     const [maxSalary, setMaxSalary] = useState<number>()
@@ -44,7 +44,6 @@ function Jobs() {
         pageSize: 5,
     });
 
-
     interface FilterAndSearch {
         name: string;
         location: string;
@@ -52,6 +51,7 @@ function Jobs() {
         employment: any[] | [];
         price: number[] | [];
     }
+
     const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
         name: '',
         location: '',
@@ -59,7 +59,10 @@ function Jobs() {
         employment: [],
         price: [],
     })
-    const page = Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize)
+
+    const totalJobs = jobState?.jobs?.totalCount?.[0]?.count || 0
+    const totalPages = Math.max(1, Math.ceil((totalJobs || 5) / pagination.pageSize))
+    const recommendedCount = jobState?.recommended?.length || 0
 
     const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[], location?: string) => {
         try {
@@ -90,10 +93,7 @@ function Jobs() {
             mergeRanges(filterAndSearch?.price),
             filterAndSearch?.location
         )
-    }, [pagination.pageIndex, pagination.pageSize,
-    filterAndSearch?.employment, filterAndSearch?.category,
-    filterAndSearch?.price, startNameSearch
-    ])
+    }, [pagination.pageIndex, pagination.pageSize, filterAndSearch?.employment, filterAndSearch?.category, filterAndSearch?.price, startNameSearch])
 
     function applyForJob(data: any) {
         if (userState?.user.resumes.length > 0) {
@@ -102,7 +102,7 @@ function Jobs() {
             setCompanyId(data.companyId)
             setPdf(userState?.user.resumes)
         } else {
-            toast.error('pleae provide a resume')
+            toast.error('please provide a resume')
         }
     }
 
@@ -113,7 +113,7 @@ function Jobs() {
             if (res) {
                 setModalOpen(false)
             }
-            toast.success('applied succesfully', { position: "top-center" })
+            toast.success('applied successfully', { position: "top-center" })
         } catch (error) {
             console.log(error)
             toast.error(jobState?.err?.message, { position: "top-center" })
@@ -125,22 +125,14 @@ function Jobs() {
     }
 
     function handleCategory(e: any, _id: string) {
-        const target = e.currentTarget; // or e.target if it's directly on the button
+        const target = e.currentTarget;
         const ariaChecked = target.getAttribute('aria-checked');
-
-        // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
         setFilterAndSearch(prevState => {
-            let updatedCategory;
-
-            if (newAriaChecked === 'true') {
-                // Add category if checked
-                updatedCategory = [...prevState.category, _id];
-            } else {
-                // Remove category if unchecked
-                updatedCategory = prevState.category.filter(id => id !== _id);
-            }
+            const updatedCategory = newAriaChecked === 'true'
+                ? [...prevState.category, _id]
+                : prevState.category.filter(id => id !== _id);
 
             return {
                 ...prevState,
@@ -150,21 +142,14 @@ function Jobs() {
     }
 
     function handleEmployment(e: any, _id: string) {
-        const target = e.currentTarget; // or e.target if it's directly on the button
+        const target = e.currentTarget;
         const ariaChecked = target.getAttribute('aria-checked');
-        // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
         setFilterAndSearch(prevState => {
-            let updatedEmployment;
-
-            if (newAriaChecked === 'true') {
-                // Add employment if checked
-                updatedEmployment = [...prevState.employment, _id];
-            } else {
-                // Remove .employment if unchecked
-                updatedEmployment = prevState.employment.filter(id => id !== _id);
-            }
+            const updatedEmployment = newAriaChecked === 'true'
+                ? [...prevState.employment, _id]
+                : prevState.employment.filter(id => id !== _id);
 
             return {
                 ...prevState,
@@ -174,22 +159,16 @@ function Jobs() {
     }
 
     function handleSalary(e: any, data: any[]) {
-        const target = e.currentTarget; // or e.target if it's directly on the button
+        const target = e.currentTarget;
         const ariaChecked = target.getAttribute('aria-checked');
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
         setFilterAndSearch((prevState: any) => {
-            let updatedPrice;
-
-            if (newAriaChecked === 'true') {
-                // Add category if checked
-                updatedPrice = [...prevState.price, data];
-            } else {
-                // Remove category if unchecked
-                updatedPrice = prevState.price.filter(
+            const updatedPrice = newAriaChecked === 'true'
+                ? [...prevState.price, data]
+                : prevState.price.filter(
                     (r: any) => r[1] != data[1] || r[0] != data[0]
                 );
-            }
 
             mergeRanges(updatedPrice);
             return {
@@ -219,216 +198,198 @@ function Jobs() {
         dispatch(recommendedJobs()).unwrap()
     }, [])
 
-    return (
+    const jobList = (items: any[] = []) => (
         <>
-            <div className={`flex flex-col items-center justify-center ${open && open ? 'w-full' : 'w-full'} ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
-                <div className={`${open && open ? 'hidden' : ''} `}>
-                    <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
-                        <h1 className="self-start text-slate-800 max-md:text-4xl">
-                            Find your
-                        </h1>
-                        <div className={`flex-col text-sky-400 max-md:text-4xl`}>
-                            <div className="max-md:text-4xl">dream job</div>
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c5387d8afcfab9fd00e94a5a0ff7e7093a6a80b56f15adaf6cecf8274992e61?"
-                                className="self-center aspect-[16.67] w-[241px]"
-                            />
+            {items.length > 0 ? (
+                items.map((data: any, ind: number) => (
+                    <UserJobCard key={ind} data={data} apply={applyForJob} />
+                ))
+            ) : (
+                <div className='flex min-h-[420px] items-center justify-center rounded-[28px] border border-dashed border-zinc-200 bg-white'>
+                    <Lottie className='h-72 w-full max-w-lg' animationData={animation} />
+                </div>
+            )}
+        </>
+    )
+
+    return (
+        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_50%,#f8fafc_100%)] ${open ? '' : ''}`}>
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <section className="relative overflow-hidden rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_34%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.08),_transparent_32%)]" />
+                    <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="max-w-2xl">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-700">
+                                <Sparkles size={14} />
+                                Curated jobs
+                            </div>
+                            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                                Find your next role without the noise.
+                            </h1>
+                            <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
+                                Search by company, location, or salary and browse the strongest matches in a cleaner, more focused layout.
+                            </p>
                         </div>
-                    </div>
-                    <div className={`hidden sm:block mt-6 text-lg leading-7 text-center text-slate-600 max-md:max-w-full`}>
-                        Find your next career at companies like HubSpot, Nike, and Dropbox
-                    </div>
-                </div>
-                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-                <div className="p-6 flex justify-center items-center bg-white max-w-[800px]  max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col w-full ">
-                        <FormControl sx={{ m: 1 }} variant="standard">
-                            <InputLabel
-                                htmlFor="demo-customized-textbox"
-                            >
-                                Search company name
-                            </InputLabel>
-                            <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
-                        </FormControl>
-                        <FormControl sx={{ m: 1 }} variant="standard">
-                            <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
-                            <BootstrapInput
-                                onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })}
-                                id="demo-customized-textbox" />
-                        </FormControl>
-                        <Button
-                            onClick={handleSearch}
-                            sx={{
-                                m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
-                                    backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
-                                }
-                            }} variant="outlined">
-                            search my job
-                        </Button>
-                    </div>
-                </div>
-                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-            </div>
-            <div className="flex justify-center items-center self-stretch px-10 py-3 max-md:px-5 w-full m-0">
-                <div className="w-full max-w-[1193px]  max-md:max-w-full ">
-                    <Tabs defaultValue="jobs">
-                        <div className="flex gap-5 items-center justify-center w-full max-md:flex-wrap max-md:max-w-full ">
-                            <div className="flex flex-col w-full justify-center items-center ">
-                                <div className="text-3xl font-semibold leading-10 text-slate-900 mb-1">
-                                    All Jobs
-                                </div>
-                                <TabsList className='flex gap-2 bg-white mb-2'>
-                                    <TabsTrigger value='jobs' className={cn("font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm data-[state=active]:border-indigo-600 ")}>
-                                        Showing {jobState?.jobs?.totalCount?.[0]?.count || 0} results
-                                    </TabsTrigger>
-                                    <TabsTrigger value='recommended' className={cn("font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm data-[state=active]:border-indigo-600 ")}>
-                                        recommended jobs {jobState?.recommended?.length}
-                                    </TabsTrigger>
-                                </TabsList>
+
+                        <div className="w-full max-w-3xl rounded-[28px] border border-zinc-200 bg-white/90 p-4 shadow-sm backdrop-blur">
+                            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
+                                <FormControl sx={{ m: 0 }} variant="standard">
+                                    <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
+                                    <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
+                                </FormControl>
+                                <FormControl sx={{ m: 0 }} variant="standard">
+                                    <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
+                                    <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })} id="demo-customized-textbox" />
+                                </FormControl>
+                                <Button
+                                    onClick={handleSearch}
+                                    sx={{
+                                        m: 0,
+                                        height: '52px',
+                                        marginTop: { xs: '8px', lg: '22px' },
+                                        backgroundColor: 'rgb(79 70 229)',
+                                        color: 'white',
+                                        borderRadius: '16px',
+                                        fontWeight: '700',
+                                        paddingInline: '24px',
+                                        '&:hover': {
+                                            backgroundColor: 'rgb(67 56 202)',
+                                        }
+                                    }}
+                                    variant="contained"
+                                    startIcon={<Search size={18} />}
+                                >
+                                    Search jobs
+                                </Button>
                             </div>
                         </div>
-                        <TabsContent value='jobs'>
-                            <div className="flex gap-5 max-md:flex-col">
-                                <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                                    <div className="flex flex-col grow text-base leading-6 text-slate-900 max-md:mt-10">
+                    </div>
+                </section>
+
+                <div className="mt-6 rounded-[32px] border border-zinc-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                    <Tabs defaultValue="jobs" className="p-6 sm:p-8">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="text-3xl font-semibold tracking-tight text-slate-900">
+                                All Jobs
+                            </div>
+                            <TabsList className='inline-flex h-auto gap-2 rounded-full border border-zinc-200 bg-slate-50 p-1 shadow-sm'>
+                                <TabsTrigger value='jobs' className={cn("rounded-full px-4 py-2 text-sm font-semibold text-slate-600 data-[state=active]:bg-white data-[state=active]:text-indigo-700 data-[state=active]:shadow-sm")}>
+                                    Showing {totalJobs} results
+                                </TabsTrigger>
+                                <TabsTrigger value='recommended' className={cn("rounded-full px-4 py-2 text-sm font-semibold text-slate-600 data-[state=active]:bg-white data-[state=active]:text-indigo-700 data-[state=active]:shadow-sm")}>
+                                    recommended jobs {recommendedCount}
+                                </TabsTrigger>
+                            </TabsList>
+                        </div>
+
+                        <TabsContent value='jobs' className="mt-8">
+                            <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
+                                <aside className="h-fit lg:sticky lg:top-6">
+                                    <div className="rounded-[28px] border border-zinc-200 bg-white p-4 shadow-sm">
+                                        <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                                            Filters
+                                        </div>
                                         <Accordion type="multiple" className="w-full">
                                             <CategoryAccordian handleEmployment={handleEmployment} />
                                             <SectoresAccordian handleCategory={handleCategory} />
-                                            <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} minSalary={minSalary} handleInputSalary={handleInputSalary} />
+                                            <SalaryAccordian
+                                                handleSalary={handleSalary}
+                                                setMaxSalary={setMaxSalary}
+                                                setMinSalary={setMinSalary}
+                                                minSalary={minSalary}
+                                                handleInputSalary={handleInputSalary}
+                                            />
                                         </Accordion>
                                     </div>
-                                </div>
-                                <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
-                                    <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
-                                        {
-                                            jobState?.jobs?.jobs?.length > 0 ?
-                                                jobState?.jobs?.jobs?.map((data: any, ind: number) => (
-                                                    <UserJobCard key={ind} data={data} apply={applyForJob} />
-                                                ))
-                                                : (
-                                                    <div className='w-full h-96'>
-                                                        <Lottie className='w-full h-full' animationData={animation} />
-                                                    </div>
-                                                )
-                                        }
-                                        <div className='flex items-center justify-center gap-2 font-bold'>
-                                            <Button
-                                                variant="contained"
-                                                onClick={() => {
-                                                    if (pagination.pageIndex < page) {
-                                                        if (pagination.pageIndex + 1 > 1) {
-                                                            setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
-                                                        }
-                                                    }
-                                                }}
-                                                className="h-8 w-8 p-0"
-                                            >
-                                                <span className="sr-only">Go to first page</span>
-                                                <DoubleArrowLeftIcon className="h-4 w-4" />
-                                            </Button>
-                                            {
-                                                <span className='font-thin'>
-                                                    page {pagination?.pageIndex + 1} of {page}
-                                                </span>
-                                            }
-                                            <Button
-                                                variant="contained"
-                                                className={`h-8 w-8 p-0`}
-                                                onClick={() => {
-                                                    if (pagination.pageIndex < page) {
-                                                        if (pagination.pageIndex + 1 < page) {
-                                                            setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
-                                                        }
-                                                    }
-                                                }}
-                                            >
-                                                <span className="sr-only">Go to first page</span>
-                                                <DoubleArrowRightIcon className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                        <AlertDialog open={modalOpen}>
+                                </aside>
 
-                                            <AlertDialogTrigger asChild>
-                                            </AlertDialogTrigger >
-                                            <AlertDialogContent className='max-w-fit'>
-                                                <AlertDialogHeader>
-                                                    <div className='flex w-72 overflow-x-scroll'>
-                                                        {
-                                                            pdf.map(data => (
-                                                                <div>
-                                                                    <iframe width="320" className='hover:cursor-grab w-fit' height="360"
-                                                                        // URL.createObjectURL(file)
-                                                                        src={data}
-                                                                    >
-                                                                    </iframe>
-                                                                    <button type='button' className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
-                                                                        select
-                                                                    </button>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <span>select resume</span>
-                                                    <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        </AlertDialog >
+                                <div className="flex flex-col gap-4">
+                                    {jobList(jobState?.jobs?.jobs)}
 
+                                    <div className='flex items-center justify-center gap-3 rounded-[24px] border border-zinc-200 bg-white px-4 py-3 font-bold shadow-sm'>
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => {
+                                                if (pagination.pageIndex > 0) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
+                                                }
+                                            }}
+                                            className="h-10 w-10 rounded-full bg-indigo-600 p-0 shadow-sm hover:bg-indigo-700"
+                                        >
+                                            <span className="sr-only">Previous page</span>
+                                            <DoubleArrowLeftIcon className="h-4 w-4" />
+                                        </Button>
+                                        <span className='rounded-full bg-slate-50 px-4 py-2 text-sm font-medium text-slate-600'>
+                                            page {pagination?.pageIndex + 1} of {totalPages}
+                                        </span>
+                                        <Button
+                                            variant="contained"
+                                            className="h-10 w-10 rounded-full bg-indigo-600 p-0 shadow-sm hover:bg-indigo-700"
+                                            onClick={() => {
+                                                if (pagination.pageIndex + 1 < totalPages) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
+                                                }
+                                            }}
+                                        >
+                                            <span className="sr-only">Next page</span>
+                                            <DoubleArrowRightIcon className="h-4 w-4" />
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
                         </TabsContent>
-                        <TabsContent value='recommended'>
-                            <div className="flex gap-5 max-md:flex-col  sm:justify-center">
-                                <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
-                                    <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
-                                        {
 
-                                            jobState?.recommended?.map((data: any, ind) => (
-                                                <UserJobCard key={ind} data={data} apply={applyForJob} />
-                                            ))
-                                        }
-                                        <AlertDialog open={modalOpen}>
-
-                                            <AlertDialogTrigger asChild>
-                                            </AlertDialogTrigger >
-                                            <AlertDialogContent className='max-w-fit'>
-                                                <AlertDialogHeader>
-                                                    <div className='flex w-72 overflow-x-scroll'>
-                                                        {
-                                                            pdf.map(data => (
-                                                                <div>
-                                                                    <iframe width="320" className='hover:cursor-grab w-fit' height="360"
-                                                                        // URL.createObjectURL(file)
-                                                                        src={data}
-                                                                    >
-                                                                    </iframe>
-                                                                    <button type='button' className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
-                                                                        select
-                                                                    </button>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <span>select resume</span>
-                                                    <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        </AlertDialog >
-                                    </div>
+                        <TabsContent value='recommended' className="mt-8">
+                            <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
+                                <div className="hidden lg:block" />
+                                <div className="flex flex-col gap-4">
+                                    {jobList(jobState?.recommended)}
                                 </div>
                             </div>
                         </TabsContent>
                     </Tabs>
                 </div>
-                <Loading loading={loading} key={'loading'} />
             </div>
-        </>
+
+            <AlertDialog open={modalOpen}>
+                <AlertDialogTrigger asChild>
+                    <span />
+                </AlertDialogTrigger>
+                <AlertDialogContent className='max-w-[92vw] sm:max-w-fit rounded-[28px] border-zinc-200'>
+                    <AlertDialogHeader>
+                        <div className='flex max-w-full gap-4 overflow-x-auto pb-2'>
+                            {
+                                pdf.map((data, index) => (
+                                    <div key={index} className='flex shrink-0 flex-col gap-3 rounded-2xl border border-zinc-200 bg-white p-3 shadow-sm'>
+                                        <iframe
+                                            width="320"
+                                            className='w-[280px] sm:w-[320px]'
+                                            height="360"
+                                            src={data}
+                                        />
+                                        <button
+                                            type='button'
+                                            className='rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700'
+                                            onClick={() => handleResume(data)}
+                                        >
+                                            Select resume
+                                        </button>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className='items-center justify-between gap-3'>
+                        <span className='text-sm text-slate-500'>Choose the resume you want to attach.</span>
+                        <AlertDialogCancel onClick={() => setModalOpen(false)} className="rounded-xl border-zinc-200">
+                            Cancel
+                        </AlertDialogCancel>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <Loading loading={loading} key={'loading'} />
+        </div>
     )
 }
 

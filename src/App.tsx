@@ -84,7 +84,7 @@ function App() {
           <Route path='companies' element={<CompanyList />} />
           <Route path='companies/details' element={<CompanyDetails />} />
         </Route>
-        <Route path='/Dashboard' element={<UserDashboardHome />}>
+        <Route path='/dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
           <Route path='messages' element={<Chat />} />
           <Route path='applications' element={<Applications />} />
