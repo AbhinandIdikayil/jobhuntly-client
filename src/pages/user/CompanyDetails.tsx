@@ -10,7 +10,7 @@ function CompanyDetails() {
     const { state } = location;
 
     return (
-        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_48%,#f8fafc_100%)] ${open ? '' : ''}`}>
+        <div className="min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_48%,#f8fafc_100%)]">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <CompanyDetailsHeader data={state} />
 

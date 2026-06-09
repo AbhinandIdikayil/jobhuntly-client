@@ -2,10 +2,8 @@ import { Accordion } from '@/components/ui/accordion'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
 import { listAllCompanies } from 'src/redux/actions/commonAction';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { prop } from 'src/types/AllTypes';
 import CompanyCard from './CompanyCard';
 import Loading from 'src/components/common/Loading';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
@@ -23,8 +21,6 @@ interface FilterAndSearch {
 }
 
 function CompanyList() {
-    const context = useOutletContext<prop>() || {};
-    const { open } = context;
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state.admin)
     const [loading, setLoading] = useState<boolean>(false)
@@ -90,7 +86,7 @@ function CompanyList() {
     }, [pagination?.pageIndex, pagination?.pageSize, filterAndSearch?.category, startNameSearch])
 
     return (
-        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_50%,#f8fafc_100%)] ${open ? '' : ''}`}>
+        <div className="min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_50%,#f8fafc_100%)]">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <section className="relative overflow-hidden rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_34%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.08),_transparent_32%)]" />

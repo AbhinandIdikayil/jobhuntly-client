@@ -1,5 +1,3 @@
-import { useOutletContext } from 'react-router-dom';
-import { prop } from 'src/types/AllTypes';
 import UserSocialLinkUpdate from './UserSocialLinkUpdate';
 import UserAddtionalDetailsUpdate from './UserAddtionalDetailsUpdate';
 import UserAboutMeUpdate from './UserAboutMeUpdate';
@@ -25,11 +23,8 @@ import EditExperience from './EditExperience';
 import Multiselect from 'multiselect-react-dropdown';
 import { listSkills } from 'src/redux/actions/adminAction';
 
-
 function Profile() {
     const skills = useSelector((state: RootState) => state?.admin?.skills)
-    const context = useOutletContext<prop>() || {};
-    const { open } = context;
     const state = useSelector((state: RootState) => state.user);
     const dispatch: AppDispatch = useDispatch()
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -86,6 +81,7 @@ function Profile() {
             console.error('Failed to remove experience and update profile:', error);
         }
     }
+
     async function saveSkill() {
         const newSKill = skill?.map((data: any) => data?.name);
         try {
@@ -102,178 +98,304 @@ function Profile() {
 
     useEffect(() => {
         dispatch(listSkills()).unwrap()
-        setSelectedSkill()
     }, [])
-    return (
-        <div className={`flex flex-col ${open ? 'w-full' : 'w-full '} max-md:ml-0 sm:px-6`}>
-            <div className="text-2xl font-bold tracking-tight leading-9 text-slate-700 sm:py-2 capitalize">
-                My profile
-            </div> 
-            <div className="justify-between">
-                <div className="flex gap-5 max-md:flex-col">
-                    <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
-                        <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col sm:flex-row justify-center items-center gap-0 sm:gap-3 pb-6 py-3 sm:pt-0 bg-white rounded max-md:max-w-full">
-                                {/* //! AVATAR */}
-                                <div className='hidden sm:block pt-3'>
-                                    {
-                                        state?.user?.coverImage ? (
-                                            <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }} />
 
-                                        ) : (
-                                            <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
-                                        )
-                                    }
-                                </div>
-                                <div className='block sm:hidden'>
-                                    {
-                                        state?.user?.coverImage ? (
-                                            <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 126, height: 126 }} />
-                                        ) : (
-                                            <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
-                                        )
-                                    }
-                                </div>
-                                <div className="justify-between self-end sm:mt-6 max-w-full w-[524px] max-md:pr-5">
-                                    <div className="flex gap-5 max-md:flex-col">
-                                        <div className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col items-center grow text-lg font-semibold leading-7 text-slate-700 max-md:mt-10">
-                                                <div className="text-2xl leading-7 capitalize"> {state?.user?.name} </div>
-                                                <div className="mt-2">
-                                                    <span className="text-slate-500 capitalize">
-                                                        {
-                                                            state?.user?.experiences?.map((data: any) => {
-                                                                return data?.working ? (
-                                                                    `${data?.title} at ${data?.company}`
-                                                                ) : (
-                                                                    ''
-                                                                )
-                                                            })
-                                                        }
-                                                    </span>{" "}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col w-[31%] items-center max-md:ml-0 max-md:w-full">
-                                            <UserEditProfile name={state?.user?.name} />
-                                        </div>
-                                    </div>
-                                </div>
+    useEffect(() => {
+        setSelectedSkill()
+    }, [skills, state?.user?.skills])
+
+    return (
+        <div className="min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_52%,#f8fafc_100%)]">
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <section className="relative overflow-hidden rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_34%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.08),_transparent_32%)]" />
+                    <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-700">
+                                Profile studio
                             </div>
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 mt-6 bg-white rounded max-md:px-5 max-md:max-w-full">
-                                <div className="flex gap-4 justify-between max-md:flex-wrap max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        About Me
+                            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                                My profile
+                            </h1>
+                            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+                                Keep your professional story, resume, and contact details sharp and ready.
+                            </p>
+                        </div>
+                        <div className="rounded-[28px] border border-zinc-200 bg-white px-5 py-4 shadow-sm">
+                            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                                Profile summary
+                            </div>
+                            <div className="mt-2 text-sm font-medium text-slate-700">
+                                {state?.user?.name}
+                            </div>
+                            <div className="mt-1 text-sm text-slate-500">
+                                {state?.user?.experiences?.find((data: any) => data?.working)?.title ? `${state?.user?.experiences?.find((data: any) => data?.working)?.title} at ${state?.user?.experiences?.find((data: any) => data?.working)?.company}` : 'Add your current role'}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_380px]">
+                    <div className="space-y-6">
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)] sm:p-8">
+                            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                                <div className="flex items-center gap-5">
+                                    <div className="overflow-hidden rounded-[28px] border border-zinc-200 bg-slate-50 p-1 shadow-sm">
+                                        <Avatar
+                                            src={state?.user?.coverImage}
+                                            sx={{ bgcolor: deepOrange[500], width: 110, height: 110 }}
+                                        >
+                                            N
+                                        </Avatar>
                                     </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
+                                    <div>
+                                        <div className="text-3xl font-semibold tracking-tight text-slate-900">
+                                            {state?.user?.name}
+                                        </div>
+                                        <div className="mt-2 text-sm text-slate-500 sm:text-base">
+                                            {
+                                                state?.user?.experiences?.map((data: any) => {
+                                                    return data?.working ? (`${data?.title} at ${data?.company}`) : ('')
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <UserEditProfile name={state?.user?.name} />
+                            </div>
+                        </div>
+
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                        About me
+                                    </div>
+                                    <div className="rounded-xl border border-zinc-200 bg-slate-50 p-2 text-slate-500">
                                         <UserAboutMeUpdate />
                                     </div>
                                 </div>
-                                <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                    {
-                                        state?.user?.about
-                                    }
+                                <p className="mt-4 text-sm leading-7 text-slate-600">
+                                    {state?.user?.about}
+                                </p>
+                            </div>
+
+                            <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                        Additional details
+                                    </div>
+                                    <div className="rounded-xl border border-zinc-200 bg-slate-50 p-2 text-slate-500">
+                                        <UserAddtionalDetailsUpdate />
+                                    </div>
                                 </div>
-                                <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
+                                <div className="mt-5 space-y-4">
+                                    <div className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3">
+                                        <Mail className="mt-0.5" size={18} />
+                                        <div>
+                                            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Email</div>
+                                            <div className="mt-1 text-sm text-slate-700">{state?.user?.email}</div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3">
+                                        <Smartphone className="mt-0.5" size={18} />
+                                        <div>
+                                            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Phone</div>
+                                            <div className="mt-1 text-sm text-slate-700">{state.user.phonenumber || 'none'}</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col px-px py-6 mt-6 bg-white  rounded max-md:max-w-full">
-                                <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        Experiences
-                                    </div>
-                                    <div className="flex justify-center items-center p-2  border border-gray-500 rounded">
-                                        <AddExperience />
-                                    </div>
+                        </div>
+
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                    Experiences
                                 </div>
+                                <div className="rounded-xl border border-zinc-200 bg-slate-50 p-2 text-slate-500">
+                                    <AddExperience />
+                                </div>
+                            </div>
+                            <div className="mt-6 space-y-4">
                                 {
                                     state?.user?.experiences?.map((data: any, ind: number) => (
-                                        <div key={ind} className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-                                            <FaAward size={60} />
-                                            <div className="flex flex-col max-md:max-w-full">
-                                                <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                                    <div className="my-auto text-lg font-semibold leading-7 text-slate-700">
-                                                        {data.title}
-                                                    </div>
-                                                    <div className="flex justify-center items-center gap-1 p-2.5">
-                                                        <div className='px-2 border py-2 border-solid border-gray-400'>
-                                                            <Trash2 onClick={() => removeExperience(ind)} />
-                                                        </div>
-                                                        <div className='px-2 border py-2 border-solid border-gray-400'>
-                                                            <EditExperience ind={ind} />
-                                                        </div>
-                                                    </div>
+                                        <div key={ind} className="rounded-[28px] border border-zinc-200 bg-slate-50/70 p-5">
+                                            <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white ring-1 ring-zinc-200">
+                                                    <FaAward size={26} />
                                                 </div>
-                                                <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                                    <div className="font-medium text-slate-700"> {data?.company} </div>
-                                                    <div>
-                                                        {
-                                                            formatDate(data?.year?.from) || +
-                                                            ' - '
-                                                            +
-                                                            formatDate(data?.year?.to)
-                                                        }
+                                                <div className="flex-1">
+                                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                                        <div>
+                                                            <div className="text-lg font-semibold text-slate-900">
+                                                                {data.title}
+                                                            </div>
+                                                            <div className="mt-1 text-sm text-slate-500">
+                                                                {data?.company} - {formatDate(data?.year?.from) || ''} - {formatDate(data?.year?.to) || ''}
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <button className="rounded-xl border border-zinc-200 bg-white p-2 text-slate-500">
+                                                                <Trash2 size={18} onClick={() => removeExperience(ind)} />
+                                                            </button>
+                                                            <div className="rounded-xl border border-zinc-200 bg-white p-2 text-slate-500">
+                                                                <EditExperience ind={ind} />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                                    Developed digital marketing strategies, activation plans,
-                                                    proposals, contests and promotions for client initiatives
+                                                    <p className="mt-4 text-sm leading-7 text-slate-600">
+                                                        Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     ))
                                 }
-
                             </div>
-                            <div style={{border: '0.5px solid #dedbd3'}} key={'hai'} className="flex flex-col px-px py-6 mt-6 bg-white rounded max-md:max-w-full">
-                                <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        Education
-                                    </div>
-                                    <div className="flex justify-center items-center p-2 border border-gray-500 rounded">
-                                        <AddEducation />
-                                    </div>
+                        </div>
+
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                    Education
                                 </div>
+                                <div className="rounded-xl border border-zinc-200 bg-slate-50 p-2 text-slate-500">
+                                    <AddEducation />
+                                </div>
+                            </div>
+                            <div className="mt-6 space-y-4">
                                 {
                                     state?.user?.education?.map((data: any, index: number) => (
-                                        <>
-                                            <div key={data?.university + index} className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap ">
-                                                <div className=''>
-                                                    <FaUniversity size={50} />
+                                        <div key={data?.university + index} className="rounded-[28px] border border-zinc-200 bg-slate-50/70 p-5">
+                                            <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white ring-1 ring-zinc-200">
+                                                    <FaUniversity size={24} />
                                                 </div>
-                                                <div className="flex flex-col max-md:max-w-full">
-                                                    <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                                        <div className="my-auto text-lg font-semibold leading-7 text-slate-700">
-                                                            {data.university}
+                                                <div className="flex-1">
+                                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                                        <div>
+                                                            <div className="text-lg font-semibold text-slate-900">
+                                                                {data.university}
+                                                            </div>
+                                                            <div className="mt-1 text-sm text-slate-500">
+                                                                {data?.course}
+                                                            </div>
                                                         </div>
-                                                        <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                                        <div className="rounded-xl border border-zinc-200 bg-white p-2 text-slate-500">
                                                             <EditEducation ind={index} />
                                                         </div>
                                                     </div>
-                                                    <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                                        <div> {data?.course} </div>
-                                                    </div>
-                                                    <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
+                                                    <div className="mt-3 text-sm text-slate-500">
                                                         {formatDateRange(state?.user?.education[index].year?.from) + ' - ' + formatDateRange(state?.user?.education[index]?.year?.to)}
                                                     </div>
-                                                    <div className="mt-3 text-base leading-7 text-slate-700 max-md:max-w-full">
-                                                        {
-                                                            data?.description
-                                                        }
-                                                    </div>
+                                                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                                                        {data?.description}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div key={index} className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
-                                        </>
+                                        </div>
                                     ))
                                 }
                             </div>
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 mt-6 bg-white rounded max-md:px-5 max-md:max-w-full">
-                                <div className="flex gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        Skills
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                    Social links
+                                </div>
+                                <div className="rounded-xl border border-zinc-200 bg-slate-50 p-2 text-slate-500">
+                                    <UserSocialLinkUpdate />
+                                </div>
+                            </div>
+                            <div className="mt-5 space-y-4">
+                                <div className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3">
+                                    <Instagram size={18} />
+                                    <div>
+                                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Instagram</div>
+                                        <div className="mt-1 break-all text-sm text-indigo-600">{state?.user?.socialLink?.[0]?.substr(8)}</div>
                                     </div>
                                 </div>
+                                <div className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3">
+                                    <Twitter size={18} />
+                                    <div>
+                                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Twitter</div>
+                                        <div className="mt-1 break-all text-sm text-indigo-600">{state?.user?.socialLink?.[1]?.substr(8)}</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3">
+                                    <LinkedinIcon size={18} />
+                                    <div>
+                                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Website</div>
+                                        <div className="mt-1 break-all text-sm text-indigo-600">{state?.user?.socialLink?.[2]?.substr(8)}</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-slate-50 px-4 py-3">
+                                    <Globe size={18} />
+                                    <div>
+                                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Personal site</div>
+                                        <div className="mt-1 break-all text-sm text-indigo-600">{state?.user?.personalsite}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                    Add resume
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleClick}
+                                    className="flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-slate-50 text-slate-600 transition hover:border-indigo-200 hover:text-indigo-700"
+                                >
+                                    <Plus size={20} />
+                                    <input ref={fileInputRef} onChange={handleChange} type='file' style={{ display: 'none' }} />
+                                </button>
+                            </div>
+                            <div className="mt-5">
+                                <Accordion type="single" collapsible className="w-full">
+                                    {
+                                        state?.user?.resumes?.map((data: any, index: number) => (
+                                            <AccordionItem key={index} value={`item-${index + 1}`}>
+                                                <AccordionTrigger>resume {index + 1}</AccordionTrigger>
+                                                <AccordionContent>
+                                                    <iframe height={360} src={data} className='w-full rounded-2xl border border-zinc-200' />
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        ))
+                                    }
+                                </Accordion>
+                            </div>
+                            {
+                                pdf && (
+                                    <AlertDialog open={modal}>
+                                        <AlertDialogTrigger asChild>
+                                            <span />
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent className='max-w-fit rounded-[28px] border-zinc-200'>
+                                            <AlertDialogHeader>
+                                                <iframe width="320" className='w-fit rounded-2xl border border-zinc-200' height="360" src={pdf}></iframe>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel onClick={() => setModal(false)}>Cancel</AlertDialogCancel>
+                                                <Button type="submit" onClick={handleResume} className='ml-2 bg-indigo-700'>Submit</Button>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                )
+                            }
+                        </div>
+
+                        <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+                            <div className="text-xl font-semibold tracking-tight text-slate-900">
+                                Skills
+                            </div>
+                            <div className="mt-4">
                                 <Multiselect
                                     displayValue="name"
                                     options={skills}
@@ -281,135 +403,10 @@ function Profile() {
                                     onSelect={(e) => setSkills(e)}
                                     onRemove={(e) => setSkills(e)}
                                 />
-
                             </div>
-                            <div className='flex mt-3'>
-                                <button type='button' onClick={saveSkill} className='bg-indigo-600 w-full text-white font-bold p-2'>
-                                    save
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                        <div className="flex flex-col max-md:mt-6">
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 w-full bg-white rounded max-md:px-5">
-                                <div className="flex gap-4 justify-between">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        Additional Details
-                                    </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-gray-500  rounded">
-
-                                        {/* //!  A MODAL WILL POPUP IF THE EDIT ICON IS CLICKED */}
-                                        <UserAddtionalDetailsUpdate />
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <Mail />
-                                    <div className="flex flex-col">
-                                        <div className="text-slate-500">Email</div>
-                                        <div className="text-slate-700">{state?.user?.email}</div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6">
-                                    <Smartphone />
-                                    <div className="flex flex-col">
-                                        <div className="text-slate-500">Phone</div>
-                                        <div className="text-slate-700">{state.user.phonenumber || 'none'}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 w-full mt-6 bg-white rounded max-md:px-5">
-                                <div className="flex gap-4 justify-between">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        Add resume
-                                    </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
-
-                                        <Plus onClick={handleClick} />
-                                        <input ref={fileInputRef} onChange={handleChange} type='file' style={{ display: 'none' }} />
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <Accordion type="single" collapsible className="w-full">
-                                        {
-                                            state?.user?.resumes?.map((data: any, index: number) => (
-                                                <AccordionItem key={index} value={`item-${index + 1}`}>
-                                                    <AccordionTrigger>resume {index + 1} </AccordionTrigger>
-                                                    <AccordionContent>
-                                                        <iframe height={400} src={data} className='w-full sm:w-auto'>
-                                                        </iframe>
-                                                    </AccordionContent>
-                                                </AccordionItem>
-                                            ))
-                                        }
-                                    </Accordion>
-                                </div>
-                                {
-                                    pdf && (
-                                        <>
-                                            <AlertDialog open={modal}>
-                                                <AlertDialogTrigger asChild>
-                                                </AlertDialogTrigger >
-                                                <AlertDialogContent className='max-w-fit'>
-                                                    <AlertDialogHeader>
-                                                        <iframe width="320" className='w-fit' height="360"
-                                                            // URL.createObjectURL(file)
-                                                            src={pdf}
-                                                        >
-
-                                                        </iframe>
-                                                    </AlertDialogHeader>
-                                                    <AlertDialogFooter>
-                                                        <AlertDialogCancel onClick={() => setModal(false)} className="">Cancel</AlertDialogCancel>
-                                                        <Button type="submit" onClick={handleResume} className='ml-2 bg-indigo-700'>Submit</Button>
-                                                    </AlertDialogFooter>
-                                                </AlertDialogContent>
-                                            </AlertDialog >
-
-                                        </>
-                                    )
-                                }
-                            </div>
-                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 mt-6 w-full bg-white rounded max-md:px-5">
-                                <div className="flex gap-4 justify-between">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
-                                        Social Links
-                                    </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
-
-                                        {/* //!  A MODAL WILL POPUP IF THE EDIT ICON IS CLICKED */}
-                                        <UserSocialLinkUpdate />
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
-                                    <Instagram />
-                                    <div className="flex flex-col flex-grow">
-                                        <div className="text-slate-500">Instagram</div>
-                                        <div className="text-indigo-600 truncate ">{state?.user?.socialLink?.[0]?.substr(8)}</div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
-                                    <Twitter />
-                                    <div className="flex flex-col">
-                                        <div className="text-slate-500">Twitter</div>
-                                        <div className="text-indigo-600">{state?.user?.socialLink?.[1]?.substr(8)}</div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
-                                    <LinkedinIcon />
-                                    <div className="flex flex-col">
-                                        <div className="text-slate-500">Website</div>
-                                        <div className="text-indigo-600">{state?.user?.socialLink?.[2]?.substr(8)}</div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
-                                    <Globe />
-                                    <div className="flex flex-col">
-                                        <div className="text-slate-500">Website</div>
-                                        <div className="text-indigo-600">{state?.user?.personalsite}</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <button type='button' onClick={saveSkill} className='mt-4 w-full rounded-2xl bg-indigo-600 p-3 font-bold text-white transition hover:bg-indigo-700'>
+                                Save skills
+                            </button>
                         </div>
                     </div>
                 </div>

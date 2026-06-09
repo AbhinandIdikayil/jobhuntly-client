@@ -30,7 +30,7 @@ function JobDetails() {
     }
 
     return (
-        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_48%,#f8fafc_100%)] ${open ? '' : ''}`}>
+        <div className="min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_48%,#f8fafc_100%)]">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <div className="rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
                     <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">

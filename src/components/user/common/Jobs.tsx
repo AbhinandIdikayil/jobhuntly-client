@@ -5,8 +5,6 @@ import Button from '@mui/material/Button'
 import {
     Accordion,
 } from "@/components/ui/accordion"
-import { prop } from 'src/types/AllTypes';
-import { useOutletContext } from 'react-router-dom';
 import UserJobCard from './JobCard'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
@@ -26,8 +24,6 @@ import animation from 'src/animation/Animation - 1728884349481.json'
 import { Search, Sparkles } from 'lucide-react';
 
 function Jobs() {
-    const context = useOutletContext<prop>() || {};
-    const { open } = context;
     const jobState = useSelector((state: RootState) => state.job);
     const userState = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch()
@@ -213,7 +209,7 @@ function Jobs() {
     )
 
     return (
-        <div className={`min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_50%,#f8fafc_100%)] ${open ? '' : ''}`}>
+        <div className="min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_50%,#f8fafc_100%)]">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <section className="relative overflow-hidden rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_34%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.08),_transparent_32%)]" />

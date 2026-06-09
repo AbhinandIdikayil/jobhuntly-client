@@ -1,30 +1,31 @@
-import { styled } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { useDispatch, useSelector } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
 import ApplicationListInDashboard from 'src/components/user/dashboard/ApplicationListInDashboard';
 import DashboardInterviewList from 'src/components/user/dashboard/DashboardInterviewList';
 import { listApplications } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { prop } from 'src/types/AllTypes';
 
 function UserDashboard() {
   const dispatch: AppDispatch = useDispatch()
-  const context = useOutletContext<prop>() || {};
-  const { open } = context;
   const application = useSelector((state: RootState) => state?.job?.applications);
   const interviewed = application?.filter((data) => data?.hiring_status === 'interview')
   const shortlisted = application?.filter((data) => data?.hiring_status == 'shortlisted')
   const inreview = application?.filter((data) => data?.hiring_status === 'in-review')
   const rejected = application?.filter((data) => data?.hiring_status === 'rejected')
 
-  const [series] = useState([interviewed?.length, inreview?.length, shortlisted?.length, rejected?.length, application?.length]);
-  const [options] = useState<any>({
+  const totalApplications = application?.length ?? 0;
+  const series = [interviewed?.length ?? 0, inreview?.length ?? 0, shortlisted?.length ?? 0, rejected?.length ?? 0, application?.length ?? 0];
+  const options: any = {
     chart: {
       type: 'donut',
     },
     labels: ['Interviewed', 'in-review', 'shortlisted', 'declined', 'applied'],
+    colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#7c3aed'],
+    legend: {
+      position: 'bottom',
+      fontFamily: 'var(--font-body)',
+    },
     responsive: [{
       breakpoint: 480,
       options: {
@@ -36,12 +37,11 @@ function UserDashboard() {
         },
       },
     }],
-  });
+  };
 
   const fetchData = async () => {
     try {
-      let data = await dispatch(listApplications()).unwrap()
-      return data
+      await dispatch(listApplications()).unwrap()
     } catch (error) {
       console.log(error)
     }
@@ -51,122 +51,133 @@ function UserDashboard() {
     fetchData()
   }, [])
 
-  const ResponsiveContainer = styled('div')<{ open: boolean }>(({ theme }) => ({
-    width: '100%',
-    maxWidth: '100%',
-    overflowX: 'hidden',
-    padding: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      // width: open ? `calc(100% - ${240}px)` : '100%',
-      // marginLeft: open ? 240 : 0,
-    },
-  }));
+  const StatCard = ({ label, value, accent, note }: { label: string; value: number; accent: string; note: string }) => (
+    <div className="rounded-[26px] border border-zinc-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+            {label}
+          </div>
+          <div className="mt-3 text-4xl font-semibold tracking-tight text-slate-900">
+            {value}
+          </div>
+          <div className="mt-2 text-sm text-slate-500">
+            {note}
+          </div>
+        </div>
+        <div className={`h-12 w-12 rounded-2xl ${accent}`} />
+      </div>
+    </div>
+  );
 
 
   return (
-    <ResponsiveContainer open={open ? true : false}>
-      <div className="flex flex-col gap-1 w-full">
-        <div className='flex flex-wrap w-full gap-5'>
-          <div className='flex flex-col max-md:flex-row gap-2'>
-            <div className="flex overflow-hidden items-start px-6  pt-7  border border-solid border-zinc-400 rounded w-[258px] max-md:w-full max-md:px-3">
-              <div className="flex z-10 flex-col self-start mr-0 w-full">
-                <div className="text-xl max-md:text-base leading-tight w-full font-bold">Total Jobs Applied</div>
-                <div className="self-start mt-7 text-7xl leading-none text-center max-md:text-4xl">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#faf9f7_0%,#ffffff_52%,#f8fafc_100%)]">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden rounded-[32px] border border-zinc-200 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-8">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_34%),radial-gradient(circle_at_bottom_left,_rgba(16,185,129,0.08),_transparent_32%)]" />
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-700">
+                Your dashboard
+              </div>
+              <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                Welcome back, let's turn your profile into a stronger signal.
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+                Keep an eye on applications, interview activity, and profile health from one clean workspace.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <StatCard label="Total applications" value={totalApplications} note="All tracked submissions" accent="bg-indigo-100 ring-1 ring-indigo-200" />
+              <StatCard label="Interviews" value={interviewed?.length ?? 0} note="Potential next steps" accent="bg-emerald-100 ring-1 ring-emerald-200" />
+              <StatCard label="Shortlisted" value={shortlisted?.length ?? 0} note="Applications gaining momentum" accent="bg-amber-100 ring-1 ring-amber-200" />
+            </div>
+          </div>
+        </section>
+
+        <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="space-y-6">
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="rounded-[28px] border border-zinc-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+                <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+                  Applied today
+                </div>
+                <div className="mt-3 text-4xl font-semibold tracking-tight text-slate-900">
                   {application?.length ?? 0}
                 </div>
-              </div>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/81d209f7c4399a3afb60010a5a56afe0eead64ffb45723cb07f84b5ae7cb3e08?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-                className="object-contain shrink-0 self-end mt-16 aspect-[1.29] w-[88px] max-md:mt-10"
-              />
-            </div>
-            <div className="flex overflow-hidden items-start px-6 pt-7 max-w-full  border border-solid border-zinc-400 rounded w-[258px] max-md:w-full max-md:px-5">
-              <div className="flex z-10 flex-col self-start mr-0">
-                <div className="text-xl leading-tight max-md:text-base font-bold">Total Jobs Applied</div>
-                <div className="self-start mt-7 text-7xl leading-none text-center max-md:text-4xl">
-                  {application?.length ?? 0}
+                <div className="mt-2 text-sm text-slate-500">
+                  Your current application footprint.
                 </div>
               </div>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/81d209f7c4399a3afb60010a5a56afe0eead64ffb45723cb07f84b5ae7cb3e08?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-                className="object-contain shrink-0 self-end mt-16 aspect-[1.29] w-[88px] max-md:mt-10"
-              />
-            </div>
-          </div>
-          <div className="relative flex flex-col items-center justify-center px-1 py-2  border border-solid border-zinc-400 rounded w-full sm:w-1/3 max-md:px-5 shadow-md">
-            <div className="absolute top-5 text-xl font-semibold leading-tight text-center text-slate-800">
-              Jobs Applied Status
-            </div>
-            <div className="flex gap-6 items-center self-stretch mt-5">
-              <div className="flex flex-col self-stretch leading-relaxed whitespace-nowrap">
-                <div id="chart">
-                  <ReactApexChart options={options} series={series} type="donut" />
+
+              <div className="rounded-[28px] border border-zinc-200 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] sm:col-span-2 xl:col-span-1">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
+                      Jobs applied status
+                    </div>
+                    <div className="mt-2 text-sm text-slate-500">
+                      Snapshot of where applications stand.
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <ReactApexChart options={options} series={series} type="donut" height={280} />
                 </div>
               </div>
             </div>
-          </div>
-          <div className="hflex flex-col pb-3 bg-white border border-solid border-zinc-500 rounded w-full sm:w-1/3 max-md:max-w-full shadow-md">
-            <div className="flex flex-col pt-2 pb-2 w-full text-xl font-semibold leading-tight text-gray-800 border border-solid shadow-sm border-zinc-200 max-md:max-w-full">
-              <div className="self-start ml-6 text-center max-md:ml-2.5 bg-white ">
-                Upcomming Interviews
+
+            <div className="rounded-[32px] border border-zinc-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+              <div className="flex items-center justify-between gap-4 border-b border-zinc-200 px-6 py-4">
+                <div>
+                  <div className="text-xl font-semibold tracking-tight text-slate-900">
+                    Recent Applications
+                  </div>
+                  <p className="mt-1 text-sm text-slate-500">
+                    The latest jobs you've acted on.
+                  </p>
+                </div>
+                <div className="rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-700">
+                  live
+                </div>
+              </div>
+              <div className="p-6">
+                <ApplicationListInDashboard />
               </div>
             </div>
-            <DashboardInterviewList />
           </div>
-        </div>
-        <ApplicationListInDashboard />
-      </div >
-      {/* <div className="flex flex-col font-semibold  text-slate-800 sm:w-1/4 shadow-md">
-      <div className="flex overflow-hidden items-start px-6 pt-7 max-w-full  border border-solid border-zinc-500 rounded w-[258px] max-md:px-5">
-        <div className="flex z-10 flex-col self-start mr-0">
-          <div className="text-xl leading-tight">Total Jobs Applied</div>
-          <div className="self-start mt-7 text-7xl leading-none text-center max-md:text-4xl">
-            {application?.length ?? 0}
-          </div>
-        </div>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/81d209f7c4399a3afb60010a5a56afe0eead64ffb45723cb07f84b5ae7cb3e08?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-          className="object-contain shrink-0 self-end mt-16 aspect-[1.29] w-[88px] max-md:mt-10"
-        />
-      </div>
-      <div className="flex overflow-hidden gap-1 items-start px-6 pt-7 mt-6 max-w-full whitespace-nowrap bg-white border border-solid border-zinc-500 rounded w-[258px] max-md:px-5">
-        <div className="flex flex-col self-start">
-          <div className="text-xl leading-tight">Interviewed</div>
-          <div className="self-start mt-7 text-7xl leading-none max-md:text-4xl">
-            {interviewed?.length ?? 0}
-          </div>
-        </div>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/e639e7eb7a3e7324143d1f3f1f310726fe1853dbd532adc134c962bd6cba6d13?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-          className="object-contain shrink-0 self-end mt-16 aspect-[1.29] w-[88px] max-md:mt-10"
-        />
-      </div>
-      </div>
-      <div className="h-[400px] flex flex-col items-center justify-center px-1 py-7 bg-white border border-solid border-zinc-500 rounded min-w-[240px] sm:w-1/3 max-md:px-5 shadow-md">
-      <div className="text-xl font-semibold leading-tight text-center text-slate-800">
-        Jobs Applied Status
-      </div>
-      <div className="flex gap-6 items-center self-stretch mt-5">
-        <div className="flex flex-col self-stretch leading-relaxed whitespace-nowrap">
-          <div id="chart">
-            <ReactApexChart options={options} series={series} type="donut" />
+
+          <div className="space-y-6">
+            <div className="rounded-[32px] border border-zinc-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+              <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
+                <div className="text-xl font-semibold tracking-tight text-slate-900">
+                  Upcoming Interviews
+                </div>
+                <div className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                  next up
+                </div>
+              </div>
+              <div className="max-h-[420px] overflow-y-auto p-4">
+                <DashboardInterviewList />
+              </div>
+            </div>
+
+            <div className="rounded-[32px] border border-zinc-200 bg-gradient-to-br from-indigo-600 to-violet-600 p-6 text-white shadow-[0_20px_50px_rgba(79,70,229,0.24)]">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                Next action
+              </div>
+              <div className="mt-3 text-2xl font-semibold tracking-tight">
+                Update your profile before applying again.
+              </div>
+              <p className="mt-2 text-sm leading-7 text-white/80">
+                A stronger profile summary, a richer resume list, and active social links improve visibility.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      </div>
-      <div className="h-[400px] flex flex-col pb-3 bg-white border border-solid border-zinc-500 rounded min-w-[290px] sm:w-1/3 max-md:max-w-full shadow-md">
-      <div className="flex flex-col pt-2 pb-2 w-full text-xl font-semibold leading-tight text-gray-800 border border-solid shadow-lg border-zinc-200 max-md:max-w-full">
-        <div className="self-start ml-6 text-center max-md:ml-2.5 bg-white ">
-          Upcomming Interviews
-        </div>
-      </div>
-      <DashboardInterviewList />
-  </div> */}
-    </ResponsiveContainer>
+    </div>
   )
 }
 

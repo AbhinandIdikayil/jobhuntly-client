@@ -7,65 +7,66 @@ import { formatDateToThree } from 'src/utils/formateDate';
 function ApplicationListInDashboard() {
   const application = useSelector((state: RootState) => state?.job?.applications);
 
+  if (!application?.length) return null;
+
   return (
-    application?.length > 0 && (
-      <div className="leading-relaxed">
-        <div className="flex flex-col items-center justify-center w-full shadow-md">
-          <div className="flex flex-col py-6 w-full bg-white border border-solid border-gray-300 rounded max-md:max-w-full">
-            <div className="self-start ml-0 md:ml-6 text-xl font-semibold leading-tight text-slate-800 max-md:ml-2.5">
-              Recent Applications History
-            </div>
-            <div className="mt-5 w-full border-b border-solid border-gray-300 " />
-            {
-              application?.map((data: any, ind: number) => {
-                return ind <= 1 ? (
-                  <div key={ind} className="flex flex-col mx-6 mt-6 max-md:mr-2.5 max-md:max-w-full">
-                    <div className="flex flex-wrap gap-10 justify-between items-center p-6 w-full rounded-lg bg-slate-50 max-md:px-5 max-md:max-w-full">
-                      <div className="flex gap-4 items-center self-stretch my-auto md:w-full w-[446px] max-md:max-w-full">
-                        <img loading="lazy" src={data?.companyId?.images}
-                          className="object-contain shrink-0 self-stretch my-auto w-16 aspect-square"
-                        />
-                        <div className="flex flex-col self-stretch my-auto min-w-[240px]">
-                          <div className="text-lg font-bold text-slate-800">
-                            {data?.jobId?.jobTitle}
-                          </div>
-                          <div className="flex gap-2 justify-center items-center text-base min-h-[27px] text-slate-500">
-                            <div className="self-stretch my-auto"> {data?.jobId?.location?.[0]} </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col self-stretch my-auto text-base w-[171px]">
-                        <div className="font-medium text-slate-800">Date Applied</div>
-                        <div className="mt-1.5 text-slate-500">{formatDateToThree(data?.createdAt)} </div>
-                      </div>
-                      <div className="flex flex-col justify-center items-start self-stretch my-auto text-sm font-semibold text-amber-400 w-[117px]">
-                        <div className={`gap-2 self-stretch px-2.5 text-center py-1.5 border
-                            ${data?.hiring_status == 'interview' ? 'border border-green-500 text-green-500' : ''}
-                            ${data?.hiring_status == 'shortlisted' ? 'border border-orange-500 text-orange-500' : ''}
-                            ${data?.hiring_status == 'in-review' ? 'border border-indigo-500 text-indigo-500' : ''}
-                             border-solid rounded-[80px]`}>
-                          {data?.hiring_status}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  ''
-                )
-              }
-              )
-            }
-            <Link to={'applications'} className="flex gap-4 items-center self-center mt-6 text-base font-semibold text-center text-indigo-600">
-              <div className="self-stretch my-auto">
-                View all applications history
+    <div className="space-y-4">
+      {application?.slice(0, 3)?.map((data: any, ind: number) => (
+        <div
+          key={ind}
+          className="flex flex-col gap-4 rounded-[24px] border border-zinc-200 bg-slate-50/70 p-5 transition-colors hover:bg-slate-50 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex min-w-0 items-center gap-4">
+            <img
+              loading="lazy"
+              src={data?.companyId?.images}
+              className="h-14 w-14 rounded-2xl object-contain bg-white p-1 ring-1 ring-zinc-200"
+            />
+            <div className="min-w-0">
+              <div className="truncate text-lg font-semibold text-slate-900">
+                {data?.jobId?.jobTitle}
               </div>
-              <ArrowRight />
-            </Link>
+              <div className="mt-1 text-sm text-slate-500">
+                {data?.jobId?.location?.[0]}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-sm">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Date applied
+              </div>
+              <div className="mt-1 font-semibold text-slate-800">{formatDateToThree(data?.createdAt)}</div>
+            </div>
+
+            <div
+              className={`rounded-full px-4 py-2 text-sm font-semibold ring-1 ${
+                data?.hiring_status == 'interview'
+                  ? 'border border-green-200 bg-green-50 text-green-600 ring-green-100'
+                  : data?.hiring_status == 'shortlisted'
+                    ? 'border border-orange-200 bg-orange-50 text-orange-600 ring-orange-100'
+                    : data?.hiring_status == 'in-review'
+                      ? 'border border-indigo-200 bg-indigo-50 text-indigo-600 ring-indigo-100'
+                      : 'border border-zinc-200 bg-slate-50 text-slate-600 ring-zinc-100'
+              }`}
+            >
+              {data?.hiring_status}
+            </div>
           </div>
         </div>
-      </div>
-    )
+      ))}
 
+      <div className="flex justify-center pt-2">
+        <Link
+          to={'applications'}
+          className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 transition-colors hover:bg-indigo-100"
+        >
+          View all applications
+          <ArrowRight size={16} />
+        </Link>
+      </div>
+    </div>
   )
 }
 
