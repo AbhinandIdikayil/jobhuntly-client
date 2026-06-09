@@ -1,11 +1,8 @@
 import { Facebook, Instagram, Twitter } from "lucide-react";
-import { useLocation, useOutletContext } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CompanyDetailsHeader from "src/components/common/CompanyDetailsHeader";
-import { prop } from "src/types/AllTypes";
 
 function CompanyDetails() {
-    const context = useOutletContext<prop>() || {};
-    const { open } = context;
     const location = useLocation();
     const { state } = location;
 

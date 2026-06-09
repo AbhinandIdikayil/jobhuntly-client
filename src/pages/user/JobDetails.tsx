@@ -1,10 +1,9 @@
 import { format } from 'date-fns';
 import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useOutletContext, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { setJobById } from 'src/redux/reducers/jobSlice';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { prop } from 'src/types/AllTypes';
 import { formatSalary } from 'src/utils/formatSalary';
 
 function JobDetails() {
@@ -12,8 +11,6 @@ function JobDetails() {
     const location = useLocation()
     const dispatch: AppDispatch = useDispatch();
     const state = useSelector((state: RootState) => state.job)
-    const context = useOutletContext<prop>() || {};
-    const { open } = context;
 
     useEffect(() => {
         window.scroll(0, 0)
