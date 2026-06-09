@@ -1,73 +1,62 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 import SideDrawer from './SideDrawer';
+import Header from './Header';
 
-const drawerWidth = 270;
+function useIsMobile(breakpoint = 1024) {
+    const [isMobile, setIsMobile] = React.useState(
+        () => typeof window !== 'undefined' && window.innerWidth < breakpoint
+    );
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
-    open?: boolean;
-}>(({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3,1,0,1),
-    transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: '0px',
-    }),
-    [theme.breakpoints.down('sm')]: {
-        marginLeft: 0,
-        width: '100%',
-        padding: theme.spacing(2),
-    },
-}));
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [breakpoint]);
 
-
-
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(4, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-}));
+    return isMobile;
+}
 
 export default function DashboardHome() {
     const [open, setOpen] = React.useState(true);
+    const isMobile = useIsMobile();
 
     const handleDrawerOpen = React.useCallback(() => {
         setOpen(true);
-    }, [])
+    }, []);
 
     const handleDrawerClose = React.useCallback(() => {
         setOpen(false);
     }, []);
 
-    const navLinks = ['', 'messages', 'applications', 'jobs', 'companies', 'profile'] as string[]
+    // On mobile, sidebar overlays (no margin push). On desktop, it pushes.
+    const sidebarWidth = isMobile ? 0 : (open ? 260 : 72);
 
     return (
-        <Box sx={{ display: 'flex', alignItems:'center' , justifyContent:'center' }}>
+        <div className="flex h-screen bg-warm-surface overflow-hidden">
+            {/* Sidebar */}
             <SideDrawer
                 open={open}
-                navLinks={navLinks}
-                handleDrawerOpen={handleDrawerOpen}
                 handleDrawerClose={handleDrawerClose}
+                handleDrawerOpen={handleDrawerOpen}
             />
-            <Main open={open}>
-                <DrawerHeader>
-                </DrawerHeader>
-                <Outlet context={{ open }} />
-            </Main>
-        </Box>
+
+            {/* Main content area */}
+            <div
+                className="flex-1 flex flex-col min-w-0 overflow-hidden"
+                style={{
+                    marginLeft: `${sidebarWidth}px`,
+                    transition: 'margin-left 280ms cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+            >
+                {/* Header */}
+                <Header func={handleDrawerOpen} open={open} />
+
+                {/* Page content */}
+                <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+                    <Outlet context={{ open }} />
+                </main>
+            </div>
+        </div>
     );
 }

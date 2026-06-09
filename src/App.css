@@ -19,17 +19,8 @@ input[type="number"]:focus {
   /* Adjust border width and color as needed */
 }
 
-.sidebar-link.active>div>div {
-  background-color:  rgb(237 233 254);;
-}
-
-.sidebar-link.active>div>div>h1 {
-  font-weight: bolder;
-  color: blue;
-}
-
 .settings.active {
-  color: blue;
+  color: var(--accent-warm);
   text-decoration: underline;
 }
 

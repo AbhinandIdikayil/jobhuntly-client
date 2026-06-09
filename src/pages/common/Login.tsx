@@ -66,7 +66,7 @@ const Login: React.FC = () => {
             let result = await dispath(googleLoginAndSignup(data)).unwrap()
             console.log(result)
             if (result) {
-                navigate('/home')
+                navigate('/home');
             }
         } catch (error) {
             console.log(error);

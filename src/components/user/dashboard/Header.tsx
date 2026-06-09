@@ -1,8 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Bell, Home } from 'lucide-react'
+import { Bell, Home, Menu } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { HiMenuAlt3 } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { UseChatSocketContext } from 'src/context/ChatSocketContext'
@@ -71,84 +70,120 @@ function Header({ func, open }: props) {
     }, [loading, user.role, navigate]);
 
     return (
-        <div className="flex gap-5 justify-between px-8 w-full bg-slate-50  max-md:flex-wrap max-md:px-5 max-md:max-w-full " style={{  paddingBlock: '16px', borderBottom: '0.5px solid gray' }}>
-            <div className="flex gap-4 whitespace-nowrap">
-                <div className={`flex items-center ${open ? 'hidden' : ''} `}>
-                    <HiMenuAlt3 onClick={func} color='black' size={30} />
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                    <div className="flex gap-2">
-                        <div className="hidden sm:block sm:flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
-                            Dashboard
-                        </div>
-                    </div>
+        <header className="flex items-center justify-between h-[72px] px-6 lg:px-8 bg-white border-b border-warm-border shrink-0">
+            {/* Left section */}
+            <div className="flex items-center gap-4">
+                <button
+                    onClick={func}
+                    className={`
+                        lg:hidden flex items-center justify-center
+                        w-9 h-9 rounded-lg
+                        text-warm-text-secondary hover:text-warm-text-primary
+                        hover:bg-stone-100 transition-colors duration-150
+                        ${open ? 'hidden' : ''}
+                    `}
+                >
+                    <Menu size={20} />
+                </button>
+
+                <div className="flex flex-col">
+                    <h1 className="text-xl font-display text-warm-text-primary tracking-wide">
+                        Dashboard
+                    </h1>
+                    <p className="text-[12px] text-warm-text-tertiary mt-0.5 hidden sm:block">
+                        Welcome back{user?.user?.name ? `, ${user.user.name}` : ''}
+                    </p>
                 </div>
             </div>
-            <div className="flex gap-5 justify-center text-base font-bold leading-6 text-center text-white">
+
+            {/* Right section */}
+            <div className="flex items-center gap-2">
+                {/* Notifications */}
                 <Popover>
                     <PopoverTrigger asChild>
-                        <div className="flex relative justify-center items-center">
-                            {
-                                notifications?.length > 0 && (
-                                    <span className="bg-red-500 absolute top-1 right-0 px-1 rounded-full flex justify-center items-center" style={{ fontSize: '10px', height: '15px' }} >
-                                        {notifications?.length}
+                            <button className="relative flex items-center justify-center w-10 h-10 rounded-xl text-warm-text-secondary hover:text-warm-text-primary hover:bg-stone-100 transition-colors duration-150">
+                                <Bell size={19} strokeWidth={1.8} />
+                                {notifications?.length > 0 && (
+                                    <span className="absolute top-1.5 right-1.5 w-[18px] h-[18px] bg-indigo-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
+                                        {notifications.length > 9 ? '9+' : notifications.length}
                                     </span>
-                                )
-                            }
-                            <Bell color="blue" />
-                        </div>
+                                )}
+                            </button>
                     </PopoverTrigger>
-                    <PopoverContent align="center" className="w-56 sm:w-80" style={{ zIndex: 99 }}>
-                        <ScrollArea className="h-40 sm:h-48 rounded-md ">
-                            <div className="grid gap-4">
-                                <div className="space-y-2">
-                                    <h4 className="font-medium leading-none">Dimensions</h4>
-                                    <p className="text-sm text-muted-foreground">
-                                        Set the dimensions for the layer.
-                                    </p>
+                    <PopoverContent align="end" className="w-80 p-0 rounded-xl border-warm-border shadow-warm-md overflow-hidden">
+                        <div className="px-4 py-3 border-b border-warm-border bg-warm-surface-warm">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-sm font-semibold text-warm-text-primary font-body">
+                                        Notifications
+                                    </h3>
+                                    {notifications?.length > 0 && (
+                                        <button
+                                            onClick={() => setNotifications([])}
+                                            className="text-[11px] font-medium text-indigo-600 hover:text-indigo-700 transition-colors uppercase tracking-wider"
+                                        >
+                                            Clear all
+                                        </button>
+                                    )}
                                 </div>
-                                <div className="grid gap-4">
-                                    <div className=" border-b border-indigo-600 flex items-center w-full justify-between pb-1">
-                                        <h4 className="font-medium leading-none">Notifications</h4>
-                                        <span onClick={() => setNotifications([])} className="font-normal text-sm leading-none bg-indigo-600 text-white  rounded-md px-2 py-1">
-                                            CLEAR ALL
-                                        </span>
-                                    </div>
-                                    {
-                                        notifications?.length > 0 &&
-                                        notifications?.map((data: any, ind: number) => {
-                                            return data?.from ? (
-                                                <div key={ind + data?.from} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1 border rounded shadow-md">
-                                                    <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
-                                                    {data?.data}
-                                                    <h1 className='pl-1'>from : {data?.from} </h1>
-                                                    <a href={data?.link}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"  >
-                                                        <h1 className='px-1 bg-indigo-600 text-white font-bold text-center'>
-                                                            click to join
-                                                        </h1>
-                                                    </a>
+                        </div>
+                        <ScrollArea className="h-64">
+                            <div className="p-2">
+                                {notifications?.length > 0 ? (
+                                    notifications?.map((data: any, ind: number) => (
+                                        <div
+                                            key={ind + (data?.from || data?.content?.content)}
+                                            className="px-3 py-2.5 rounded-lg hover:bg-stone-50 transition-colors"
+                                        >
+                                            {data?.from ? (
+                                                <div className="flex flex-col gap-1.5">
+                                                    <p className="text-[13px] text-warm-text-primary leading-snug">
+                                                        {data?.data}
+                                                    </p>
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-[11px] text-warm-text-tertiary">
+                                                            from {data?.from}
+                                                        </span>
+                                                        <a
+                                                            href={data?.link}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-700 uppercase tracking-wider"
+                                                        >
+                                                            Join
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             ) : (
-                                                <div key={ind + data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
-                                                    <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                <p className="text-[13px] text-warm-text-primary leading-snug">
                                                     {data?.content?.content}
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                                </p>
+                                            )}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-8 text-center">
+                                        <Bell size={24} className="text-stone-300 mb-2" />
+                                        <p className="text-[13px] text-warm-text-tertiary">No notifications yet</p>
+                                    </div>
+                                )}
                             </div>
                         </ScrollArea>
                     </PopoverContent>
                 </Popover>
-                <div className="flex gap-1 sm:gap-2.5 justify-center px-2 py-3 sm:px-6 sm:py-3 bg-indigo-600 max-md:rounded-md">
-                    <Home className='hidden sm:block' />
-                    <Link to={'/home'} className=''>Home Page</Link>
-                </div>
+
+                {/* Divider */}
+                <div className="w-px h-6 bg-warm-border mx-1 hidden sm:block" />
+
+                {/* Home link */}
+                <Link
+                    to="/home"
+                    className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-[13px] font-medium hover:bg-indigo-700 transition-colors duration-150"
+                >
+                    <Home size={15} strokeWidth={1.8} />
+                    <span>Home</span>
+                </Link>
             </div>
-        </div>
+        </header>
     )
 }
 

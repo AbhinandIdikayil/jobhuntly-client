@@ -13,6 +13,7 @@ import Header from './Header';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
+import { HiMenuAlt3 } from "react-icons/hi";
 import { IoSettingsOutline } from 'react-icons/io5';
 import { Box, Factory, HousePlus, LogOut } from 'lucide-react';
 import { useDispatch } from 'react-redux';
@@ -81,6 +82,16 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         <Header open={open} func={handleDrawerOpen} />
 
       </AppBar>
+      {!open && (
+        <button
+          type="button"
+          onClick={handleDrawerOpen}
+          aria-label="Open sidebar"
+          className="fixed left-3 top-[88px] z-[100] flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-slate-600 shadow-md transition-all duration-150 hover:text-slate-900 hover:shadow-lg"
+        >
+          <HiMenuAlt3 size={22} />
+        </button>
+      )}
       <Drawer
         sx={{
           width: drawerWidth,
