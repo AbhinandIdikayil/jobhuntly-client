@@ -40,9 +40,9 @@ function SideDrawer({ handleDrawerClose, handleDrawerOpen, open }: props) {
   const user = useSelector((state: RootState) => state?.user);
   const isExpanded = open || hovered;
 
-  const handleMouseEnter = useCallback(() => {
-    if (!open) setHovered(true);
-  }, [open]);
+  // const handleMouseEnter = useCallback(() => {
+  //   if (!open) setHovered(true);
+  // }, [open]);
 
   const handleMouseLeave = useCallback(() => {
     setHovered(false);
