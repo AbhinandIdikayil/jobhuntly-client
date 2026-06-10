@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Brain, LoaderCircle } from 'lucide-react';
 import { AIChatSession } from 'src/service/AIModal';
 import Multiselect from 'multiselect-react-dropdown';
+import CompanyScreenFrame from './CompanyScreenFrame';
 
 
 function PostJob() {
@@ -108,7 +109,19 @@ function PostJob() {
     }
 
     return (
-        <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0 sm:px-10 py-5 max-md:w-full text-zinc-600`}>
+        <CompanyScreenFrame
+            className="company-screen-shell"
+            eyebrow="Company jobs"
+            title="Post a new job"
+            description="Create a role card with the same warm, polished tone as the rest of the company dashboard."
+            actions={
+                <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
+                    <Brain className="h-4 w-4" />
+                    AI-assisted copy
+                </div>
+            }
+        >
+        <div className={`company-form-shell mx-auto max-w-6xl text-zinc-600 ${open ? 'w-full' : 'w-full'}`}>
             <Formik
                 initialValues={PostJobInitialValues}
                 validationSchema={postJobValidationSchema}
@@ -528,6 +541,7 @@ function PostJob() {
 
             </Formik>
         </div>
+        </CompanyScreenFrame>
     )
 }
 

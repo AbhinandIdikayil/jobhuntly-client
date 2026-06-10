@@ -13,7 +13,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
 }>(({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3,1,0,1),
+    // padding: theme.spacing(3,1,0,1),
     transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -77,14 +77,14 @@ export default function CompanyHome() {
     const navLinks = ['', 'messages', 'applicants', 'job-list', 'schedules']
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--surface)' }}>
             <SideDrawer
                 open={open}
                 navLinks={navLinks}
                 handleDrawerOpen={handleDrawerOpen}
                 handleDrawerClose={handleDrawerClose}
             />
-            <Main open={open}>
+            <Main open={open} style={{ backgroundColor: 'transparent' }}>
                 <DrawerHeader>
                 </DrawerHeader>
 

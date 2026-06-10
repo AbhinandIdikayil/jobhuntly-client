@@ -12,6 +12,7 @@ import { prop } from 'src/types/AllTypes';
 import { formatDate } from 'src/utils/formateDatetoDateinput';
 import { postJobValidationSchema } from 'src/validation/company'
 import Multiselect from 'multiselect-react-dropdown';
+import CompanyScreenFrame from 'src/components/company/CompanyScreenFrame';
 
 function JobEdting() {
     const context = useOutletContext<prop>() || {};
@@ -77,7 +78,7 @@ function JobEdting() {
     }, [])
 
     return (
-        <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0 sm:px-10 py-5 max-md:w-full text-zinc-600`}>
+        <div className={`company-form-shell pt-6 mx-auto max-w-6xl text-zinc-600 ${open ? 'w-full' : 'w-full'}`}>
             <Formik
                 initialValues={PostJobInitialValues}
                 validationSchema={postJobValidationSchema}

@@ -115,7 +115,7 @@ function Applicants() {
 
 
     return (
-        <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
+        <div className={`flex px-4 flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
             <div className="w-full">
                 <div className="flex items-center py-4">
                     <Input

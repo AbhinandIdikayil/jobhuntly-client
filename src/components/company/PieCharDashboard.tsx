@@ -31,13 +31,13 @@ function PieCharDashboard() {
         ],
     };
     return (
-        <div className="mt-12 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
-            <div id="chart">
+        <div className="max-md:mr-2.5 max-md:max-w-full">
+            <div id="chart" className="flex justify-center">
                 <ReactApexChart
                     options={options}
                     series={options.series}
                     type="pie"
-                    width={options.chart.width}
+                    width={Math.min(options.chart.width, 280)}
                 />
             </div>
         </div>

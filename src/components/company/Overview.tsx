@@ -11,6 +11,7 @@ import { getCompany, updateProfile } from 'src/redux/actions/companyAction'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { IoCloseCircle } from 'react-icons/io5'
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload'
+import { Building2, ImagePlus, Sparkles } from 'lucide-react'
 
 
 function Overview() {
@@ -139,79 +140,98 @@ function Overview() {
 
     return (
         <>
-            <div className="flex flex-col justify-center px-2 sm:p-3 w-full bg-white max-md:max-w-full">
-                <div className="self-start text-lg font-semibold leading-7 text-slate-800 max-md:max-w-full">
-                    Basic Information
-                </div>
-                <div className="self-start mt-1 text-base leading-6 text-slate-500 max-md:max-w-full">
-                    This is company information that you can update anytime.
-                </div>
-                <div className="mt-12 max-md:mt-10 max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                        <div className="flex flex-col w-[34%] max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col text-base leading-7 max-md:mt-10">
-                                <div className="font-semibold text-slate-800">Company Logo</div>
-                                <div className="mt-1 text-slate-500">
-                                    This image will be shown publicly as company logo.
-                                </div>
-                            </div>
+            <div className="company-form-shell space-y-6">
+                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-6">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="max-w-2xl">
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">
+                                Basic information
+                            </p>
+                            <h2 className="mt-2 font-[family-name:var(--font-display)] text-2xl text-slate-900 sm:text-3xl">
+                                Keep the public company profile polished.
+                            </h2>
+                            <p className="mt-2 text-sm leading-6 text-slate-600">
+                                This is the information candidates see first. Use the logo, description,
+                                and company details to make the profile feel complete.
+                            </p>
                         </div>
-                        <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
-                            <div className="grow max-md:mt-10 max-md:max-w-full">
-                                <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                                    <div className="flex items-center justify-center w-full">
-                                        <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
-                                                {imagePreview ? (
-                                                    // <ReactCrop
-                                                    //     crop={crop}
-                                                    //     keepSelection
-                                                    //     aspect={1}
-                                                    //     minWidth={150}
-                                                    //     className='w-80'
-                                                    //     onChange={(percentCrop) => setCrop(percentCrop)}
-                                                    // >
-                                                    <>
-                                                        <IoCloseCircle onClick={() => setImagePreview('')} size={30} />
-                                                        <img src={imagePreview} alt="Preview"
-                                                            // onLoad={imageLoad}
-                                                            className="h-full w-full object-contain" />
-                                                    </>
-                                                    // </ReactCrop>
-                                                ) : (
-                                                    <>
-                                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                        </svg>
-                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                            <span className="font-semibold">Click to upload</span>
-                                                        </p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
-                                                        <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
-                                                    </>
-                                                )}
-                                            </div>
-                                        </label>
+                        <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700">
+                            <Sparkles className="h-4 w-4" />
+                            Public profile surface
+                        </div>
+                    </div>
+                </div>
+
+                <div className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+                    <div className="grid gap-0 lg:grid-cols-[280px,1fr]">
+                        <div className="border-b border-slate-200/80 px-5 py-6 lg:border-b-0 lg:border-r lg:px-6 lg:py-8">
+                            <div className="flex items-start gap-3">
+                                <div className="rounded-2xl bg-amber-50 p-3 text-amber-600">
+                                    <ImagePlus className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <div className="font-semibold text-slate-900">Company logo</div>
+                                    <div className="mt-1 text-sm leading-6 text-slate-500">
+                                        This image will be shown publicly as company logo.
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div className="px-5 py-6 lg:px-8 lg:py-8">
+                            <div className="flex items-center justify-center">
+                                <label className="group flex w-full cursor-pointer flex-col items-center justify-center rounded-[1.75rem] border border-dashed border-slate-300 bg-gradient-to-br from-white to-slate-50 px-6 py-8 transition hover:border-amber-300 hover:bg-amber-50/40">
+                                    <div className="flex flex-col items-center justify-center pt-2 pb-4">
+                                                {imagePreview ? (
+                                                    <>
+                                                        <IoCloseCircle
+                                                            onClick={() => setImagePreview('')}
+                                                            size={30}
+                                                            className="absolute right-4 top-4 cursor-pointer text-slate-500 transition hover:text-rose-500"
+                                                        />
+                                                        <img
+                                                            src={imagePreview}
+                                                            alt="Preview"
+                                                            className="max-h-72 w-full rounded-[1.5rem] object-contain shadow-lg"
+                                                        />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <div className="rounded-full bg-amber-100 p-4 text-amber-600">
+                                                            <Building2 className="h-8 w-8" />
+                                                        </div>
+                                                        <svg className="mt-4 mb-4 h-8 w-8 text-slate-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                        </svg>
+                                                        <p className="mb-2 text-sm text-slate-500">
+                                                            <span className="font-semibold text-slate-900">Click to upload</span>
+                                                        </p>
+                                                        <p className="text-xs text-slate-400">SVG, PNG, JPG or GIF</p>
+                                                        <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
+                                                    </>
+                                                )}
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="mt-12 max-md:mt-10 max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                        <div className="flex flex-col w-[34%] max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col text-base leading-7 max-md:mt-10">
-                                <div className="font-semibold text-slate-800">
-                                    Company Details
+
+                <div className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+                    <div className="grid gap-0 lg:grid-cols-[280px,1fr]">
+                        <div className="border-b border-slate-200/80 px-5 py-6 lg:border-b-0 lg:border-r lg:px-6 lg:py-8">
+                            <div className="flex items-start gap-3">
+                                <div className="rounded-2xl bg-slate-100 p-3 text-slate-700">
+                                    <Building2 className="h-5 w-5" />
                                 </div>
-                                <div className="mt-1 text-slate-500">
-                                    Introduce your company core info quickly to users by fill up
-                                    company details
+                                <div>
+                                    <div className="font-semibold text-slate-900">Company details</div>
+                                    <div className="mt-1 text-sm leading-6 text-slate-500">
+                                        Introduce your company core info quickly with a clean, readable form.
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
+                        <div className="px-5 py-6 lg:px-8 lg:py-8">
                             <Formik
                                 initialValues={companyProfileInitialState}
                                 validationSchema={companyProfile}
@@ -220,18 +240,18 @@ function Overview() {
                                 {
                                     ({ errors, isSubmitting }) => (
                                         <Form>
-                                            <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10 max-md:max-w-full">
-                                                <div className="font-semibold max-md:max-w-full">
+                                            <div className="flex flex-col gap-5 text-base leading-6 text-slate-600">
+                                                <div className="font-semibold text-slate-900">
                                                     Company Name
                                                 </div>
-                                                <Field name='name' id='name' label='name' type='text' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
-                                                <div className="mt-6 font-semibold max-md:max-w-full">
+                                                <Field name='name' id='name' label='name' type='text' className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 shadow-sm outline-none transition focus:border-amber-300 focus:ring-4 focus:ring-amber-100" />
+                                                <div className="font-semibold text-slate-900">
                                                     Website
                                                     {
                                                         errors?.website && <span className='text-red-600'> {errors?.website as string} </span>
                                                     }
                                                 </div>
-                                                <Field name='website' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
+                                                <Field name='website' className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 shadow-sm outline-none transition focus:border-amber-300 focus:ring-4 focus:ring-amber-100" />
                                                 {
                                                     !locations?.length && <span className='text-red-600'>location is required</span>
                                                 }
@@ -241,11 +261,11 @@ function Overview() {
 
                                                 <LocationInput label='location' name='location' location={locations} setLocation={setLocation} />
 
-                                                <div className="flex gap-5 justify-between mt-6 max-md:flex-wrap">
+                                                <div className="grid gap-4 md:grid-cols-2">
                                                     <div className="flex flex-col">
-                                                        <div className="font-semibold">Employee</div>
-                                                        <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
-                                                            <select onChange={(e) => setEmployee(e.target.value)} name="" id="" className='w-[110px]'>
+                                                        <div className="font-semibold text-slate-900">Employees</div>
+                                                        <div className="mt-1 flex gap-4 justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                                            <select onChange={(e) => setEmployee(e.target.value)} name="" id="" className='w-full bg-transparent outline-none'>
                                                                 <option value={employee}>{employee}</option>
 
                                                                 {
@@ -257,9 +277,9 @@ function Overview() {
                                                         </div>
                                                     </div>
                                                     <div className="flex flex-col whitespace-nowrap">
-                                                        <div className="font-semibold">Industry</div>
-                                                        <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
-                                                            <select onChange={(e) => setIndustry(e.target.value)} name="" id="" className='w-[110px]'>
+                                                        <div className="font-semibold text-slate-900">Industry</div>
+                                                        <div className="mt-1 flex gap-4 justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                                            <select onChange={(e) => setIndustry(e.target.value)} name="" id="" className='w-full bg-transparent outline-none'>
                                                                 <option value={'technology'}>Technology</option>
                                                                 <option value={'finance'}>Finance</option>
                                                                 <option value={'medical'}>Medical</option>
@@ -284,7 +304,7 @@ function Overview() {
                                                 </div>
                                                 <TechStackInput label='stack' name='stack' stacks={stacks} setStacks={setStacks} />
 
-                                                <div className="text-base font-semibold leading-6 text-slate-600 max-md:max-w-full">
+                                                <div className="text-base font-semibold leading-6 text-slate-600">
                                                     Description
                                                     {
                                                         errors?.description && <span className='text-red-600'> {errors?.description as string} </span>
@@ -294,12 +314,14 @@ function Overview() {
                                                     as='textarea'
                                                     name='description'
                                                     label='description'
-                                                    className="w-full h-56 justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full"
+                                                    className="w-full min-h-56 rounded-3xl border border-slate-200 bg-white px-4 py-3 text-slate-700 shadow-sm outline-none transition focus:border-amber-300 focus:ring-4 focus:ring-amber-100"
                                                 />
                                             </div>
-                                            <button type='submit' disabled={isSubmitting} name='button' className="justify-center self-end px-10 py-3.5 mt-12 text-lg font-bold leading-7 text-center text-white bg-indigo-600 max-md:px-5 max-md:mt-10">
+                                            <div className="mt-8 flex justify-end">
+                                                <button type='submit' disabled={isSubmitting} name='button' className="inline-flex items-center justify-center rounded-full bg-slate-900 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5 hover:bg-slate-800">
                                                 Save Changes
-                                            </button>
+                                                </button>
+                                            </div>
                                         </Form>
                                     )
                                 }
@@ -308,21 +330,6 @@ function Overview() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-12 max-md:mt-10 max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                        <div className="flex flex-col w-[28%] max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col text-base leading-7 max-md:mt-10">
-                                <div className="font-semibold text-slate-800">
-                                    About Company
-                                </div>
-                                <div className="mt-1 text-slate-500">
-                                    Brief description for your company. URLs are hyperlinked.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             <Backdrop
                 open={open}
