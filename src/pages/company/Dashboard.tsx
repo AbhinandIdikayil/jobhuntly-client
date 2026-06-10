@@ -9,10 +9,7 @@ import {
   BriefcaseBusiness,
   CalendarClock,
   Download,
-  Sparkles,
   UsersRound,
-  BarChart3,
-  TrendingUp,
   ClipboardList,
   type LucideIcon,
 } from "lucide-react";
@@ -148,12 +145,6 @@ function Dashboard() {
     dayjs(schedule.date).isSame(dayjs(), "day")
   );
 
-  const upcomingSchedule = applicantSchedules
-    .filter((schedule) => dayjs(schedule.date).isAfter(dayjs()))
-    .sort(
-      (left, right) =>
-        dayjs(left.date).valueOf() - dayjs(right.date).valueOf()
-    )[0];
 
   const openJobs = state?.jobs?.totalCount?.[0]?.count ?? 0;
   const inReview = applicantStatusCounts["in-review"] ?? 0;
@@ -161,9 +152,7 @@ function Dashboard() {
   const interviews = applicantStatusCounts.interview ?? 0;
   const hired = applicantStatusCounts.hired ?? 0;
   const totalCandidates = applicants.length;
-  const pipelineVelocity = totalCandidates
-    ? Math.round(((shortlisted + interviews + hired) / totalCandidates) * 100)
-    : 0;
+
   const hireRate = totalCandidates ? Math.round((hired / totalCandidates) * 100) : 0;
   const recentJobs = jobs.slice(0, 4);
 

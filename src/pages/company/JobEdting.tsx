@@ -12,7 +12,6 @@ import { prop } from 'src/types/AllTypes';
 import { formatDate } from 'src/utils/formateDatetoDateinput';
 import { postJobValidationSchema } from 'src/validation/company'
 import Multiselect from 'multiselect-react-dropdown';
-import CompanyScreenFrame from 'src/components/company/CompanyScreenFrame';
 
 function JobEdting() {
     const context = useOutletContext<prop>() || {};

@@ -13,14 +13,12 @@ import Divider from "@mui/material/Divider";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import {
-  BellRing,
   Building2,
   ChevronLeft,
   ClipboardList,
   LayoutGrid,
   MessageSquareText,
   Settings2,
-  Sparkles,
   Users,
   CalendarClock,
 } from "lucide-react";
